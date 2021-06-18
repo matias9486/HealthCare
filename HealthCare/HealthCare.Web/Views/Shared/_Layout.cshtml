@@ -6,12 +6,17 @@
     <title>@ViewData["Title"] - HealthCare.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <!--agregado para los iconos-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HealthCare.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span style="color:white">Health</span><span style="color:chartreuse">Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,11 +24,68 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        <!--listas despegables TRATAMIENTOS-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTratamientos" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-hands"></i> Tratamientos
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownTratamientos">
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="AgregarTratamiento"> <i class="fas fa-plus"></i> Agregar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="ModificarTratamiento"> <i class="fas fa-pen"></i> Modificar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="EliminarTratamiento"> <i class="fas fa-minus"></i> Eliminar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="MostrarTratamiento"> <i class="fas fa-list"></i> Mostrar</a>
+                            </div>
+                        </li>
+
+                        <!--listas despegables PRODUCTOS-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProductos" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fab fa-product-hunt"></i> Productos
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownProductos">
+                                <a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="AgregarProducto"> <i class="fas fa-plus"></i> Agregar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="MostrarProductos"> <i class="fas fa-pen"></i> Modificar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="MostrarProductos"> <i class="fas fa-minus"></i> Eliminar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Productos" asp-action="MostrarProductos"> <i class="fas fa-list"></i> Mostrar</a>
+                            </div>
+                        </li>
+
+                        <!--listas despegables FACTURAS-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFacturas" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-file-invoice-dollar"></i> Facturas
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownFacturas">
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="AgregarTratamiento"> <i class="fas fa-plus"></i> Cobrar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="MostrarTratamiento"> <i class="fas fa-list"></i> Mostrar</a>
+                            </div>
+                        </li>
+
+                        <!--listas despegables SESIONES-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSesiones" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-clipboard-list"></i> Sesiones
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownSesiones">
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="AgregarTratamiento"> <i class="fas fa-plus"></i> Agregar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="ModificarTratamiento"> <i class="fas fa-pen"></i> Modificar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="EliminarTratamiento"> <i class="fas fa-minus"></i> Eliminar</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Tratamientos" asp-action="MostrarTratamiento"> <i class="fas fa-list"></i> Mostrar</a>
+                            </div>
+                        </li>
+
+
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -32,6 +94,13 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+
+            <!--agregado para mostrar titulo-->
+            @if (@ViewData["TituloOperacion"] != null)
+            {
+                <h2 class="efectoTitulo"> @ViewData["TituloOperacion"]</h2>
+                <hr />
+            }
             @RenderBody()
         </main>
     </div>

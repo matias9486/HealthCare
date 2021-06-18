@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HealthCare.Web.Models.Repositorios
+namespace HealthCare.Web.Models
 {
     public class RepositorioProductos
     {
@@ -24,6 +24,15 @@ namespace HealthCare.Web.Models.Repositorios
             lista.Add(nuevo);
         }
 
+        public bool buscarProductoExistente(Producto p)
+        {
+            foreach (Producto pro in lista)
+            {
+                if (p.Nombre == pro.Nombre && p.Precio == pro.Precio)
+                    return true;
+            }
+            return false;
+        }
         public List<Producto> devolverLista()
         {
             return lista;

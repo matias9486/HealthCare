@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,24 +9,26 @@ namespace HealthCare.Web.Models
 {
     public class Producto
     {
-        public static int ID_Incremental = 0;
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int Nombre { get; set; }
-        public int Precio { get; set; }
+        public string Nombre { get; set; }
+        public double Precio { get; set; }
 
-        public Producto(int nombre, int precio)
-        {
-            ID_Incremental++;
-            Id = ID_Incremental;
+        public bool Activo { get; set; }
+        public Producto(string nombre, double precio)
+        {         
             Nombre = nombre;
             Precio = precio;
+            Activo = true;
         }
 
-        public Producto(int id, int nombre, int precio)
+        public Producto(int id, string nombre, double precio, bool activo)
         {
             Id = id;
             Nombre = nombre;
             Precio = precio;
+            Activo = activo;
         }
 
         public override string ToString()
