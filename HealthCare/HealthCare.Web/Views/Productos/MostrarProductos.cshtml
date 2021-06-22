@@ -1,6 +1,6 @@
 ﻿@{
     @model IEnumerable<HealthCare.Web.Models.Producto>
-    
+
 
 
     ViewData["Title"] = "Productos";
@@ -8,62 +8,61 @@
 
     if (Model.Count() > 0)
     {
+        
+        <table id="miTabla" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Precio</th>
 
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Precio</th>
+                    <th scope="col">Activo</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
 
-                <th scope="col">Activo</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
 
-            </tr>
-        </thead>
-        <tbody>
+                @foreach (Producto p in Model)
+                {
+                    <tr>
+                        <td>@p.Id</td>
+                        <td>@p.Nombre</td>
+                        <td>$@p.Precio</td>
+                        <td>
+                            @{string act;
+                                if (@p.Activo == true)
+                                    act = "Si";
+                                else
+                                    act = "No";
+                            }
+                            @act
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("EditarProducto", "Productos"))
+                            {
+                                <button type="submit" class="btn btn-warning" asp-action="EditarProducto" asp-route-id="@p.Id"><i class="fas fa-pen"></i> Editar</button>
+                            }
+                        </td>
+                        <td>
 
-            @foreach (Producto p in Model)
-            {
-            <tr>
-                <td>@p.Id</td>
-                <td>@p.Nombre</td>
-                <td>$@p.Precio</td>
-                <td>@{string act;
-                    if (@p.Activo == true)
-                        act = "Si";
-                    else
-                        act="No";
+
+                            @using (Html.BeginForm("EliminarProducto", "Productos")) //("Action","controller")
+                            {
+                                <button type="submit" class="btn btn-danger" asp-action="EliminarProducto" asp-route-id="@p.Id"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                            }
+                        </td>
+                    </tr>
                 }
-                @act
-                </td> 
-                <td>
-                    
-
-                    @using (Html.BeginForm("EditarProducto", "Productos"))
-                    {
-                        <button type="submit" class="btn btn-warning" asp-action="EditarProducto" asp-route-id="@p.Id"><i class="fas fa-pen"></i> Editar</button>
-                    }
-                </td>
-                <td>
-                    
-
-                    @using (Html.BeginForm("EliminarProducto", "Productos")) //("Action","controller")
-                    {
-                        <button type="submit" class="btn btn-danger" asp-action="EliminarProducto" asp-route-id="@p.Id"><i class="fas fa-trash-alt"></i> Eliminar</button>
-                    }
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     }
     else
     {
-    <p>No se cargaron Productos aún</p>
+        <p>No se cargaron Productos aún</p>
     }
 
-    }
-
+    
+}
 
