@@ -29,7 +29,7 @@ namespace HealthCare.Web.Controllers
             Producto nuevo = new Producto(nombre, double.Parse(precio));
             Mensaje mensaje;
             
-            Producto guardar=context.Productos.FirstOrDefault(i => i.Nombre == nuevo.Nombre && i.Precio== nuevo.Precio);
+            Producto guardar=context.Productos.FirstOrDefault(i => i.Nombre.ToUpper() == nuevo.Nombre.ToUpper() && i.Precio== nuevo.Precio);
             
            if(guardar==null)
             {                
@@ -96,17 +96,29 @@ namespace HealthCare.Web.Controllers
 
         public IActionResult Actualizar(int id, string nombre, double precio, bool activo)
         {
+            Mensaje mensaje;
             Producto editar = context.Productos.FirstOrDefault(i => i.Id == id);
             editar.Nombre = nombre;
             editar.Precio = precio;
             editar.Activo = activo;
+
+            Producto buscado = context.Productos.FirstOrDefault(i => i.Nombre.ToUpper() == editar.Nombre.ToUpper() && i.Precio == editar.Precio);
+
+            if (buscado == null)
+            {
+                context.Productos.Update(editar);
+                context.SaveChanges();
+                mensaje = new Mensaje("Se modificó Producto con éxito", "alert-success");
+            }
+            else
+            {
+                mensaje = new Mensaje("Ya existe producto con ese nombre y precio", "alert-danger");
+            }
             
-            context.Productos.Update(editar);
-            context.SaveChanges();
 
             //return RedirectToAction("MostrarProductos",context.Productos.ToList());
-            TempData["mensaje"] = "Se modificó Producto con éxito";
-            TempData["tipo"] = "alert-success";
+            TempData["mensaje"] = mensaje.Texto;
+            TempData["tipo"] = mensaje.Tipo;
 
             return RedirectToAction("MostrarMensaje");
         }
