@@ -40,18 +40,10 @@
                             @act
                         </td>
                         <td>
-                            @using (Html.BeginForm("EditarProducto", "Productos"))
-                            {
-                                <button type="submit" class="btn btn-warning" asp-action="EditarProducto" asp-route-id="@p.Id"><i class="fas fa-pen"></i> Editar</button>
-                            }
+                            <a class="btn btn-warning" asp-action="EditarProducto" asp-route-id="@p.Id"><i class="fas fa-pen"></i> Editar</a>                                                        
                         </td>
                         <td>
-
-
-                            @using (Html.BeginForm("EliminarProducto", "Productos")) //("Action","controller")
-                            {
-                                <button type="submit" class="btn btn-danger" asp-action="EliminarProducto" asp-route-id="@p.Id"><i class="fas fa-trash-alt"></i> Eliminar</button>
-                            }
+                            <a class="btn btn-danger" asp-action="EliminarProducto" asp-route-id="@p.Id"><i class="fas fa-trash-alt"></i> Eliminar</a>
                         </td>
                     </tr>
                 }
