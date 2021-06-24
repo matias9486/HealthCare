@@ -1,12 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@{
+    //se cambio>IdentityUser> por mi clase Usuario... <Usuario>
+}
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        @{ //se reemplazo @User.Identity.Name!  por @UserManager.GetUserAsync(User).Result.Nombre para poder usar mi clase usuario
+           }
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bienvenido @UserManager.GetUserAsync(User).Result.Nombre </a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

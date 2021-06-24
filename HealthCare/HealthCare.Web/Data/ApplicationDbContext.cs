@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HealthCare.Web.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Usuario> //se agrego generic <Usuario> para que podamos usar nuestra clase usuario
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,5 +15,8 @@ namespace HealthCare.Web.Data
         }
 
         public DbSet<Producto> Productos { get; set; }
+
+        //Se agrego para los usuarios
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }
