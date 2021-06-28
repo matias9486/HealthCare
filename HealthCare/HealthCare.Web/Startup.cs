@@ -34,7 +34,7 @@ namespace HealthCare.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             //se modifico <IdentityUser> por <Usuario> para que use nuestra clase usuario que tiene sus propios atributos y los heredados de Identity
-            services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
         }

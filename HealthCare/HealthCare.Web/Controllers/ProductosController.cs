@@ -11,7 +11,7 @@ namespace HealthCare.Web.Controllers
 {
     public class ProductosController : Controller
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext context;
 
         public ProductosController(ApplicationDbContext context)
         {
