@@ -23,6 +23,9 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        
+        [Display(Name = "Usuario")]
+        [Required(ErrorMessage = "{0} es requerido.")]
         public string Username { get; set; }
 
         [TempData]
@@ -33,8 +36,23 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
+            //agregado
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Nombre")]
+            [Required(ErrorMessage = "{0} es requerido.")]
+            public string Nombre { get; set; }
+
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Apellido")]
+            [Required(ErrorMessage = "{0} es requerido.")]
+            public string Apellido { get; set; }
+
+            
+            [Phone(ErrorMessage ="El Número Celular no es un número de celular válido.")]            
+            [Display(Name = "Número Celular")]
+            [Required(ErrorMessage = "{0} es requerido.")]
             public string PhoneNumber { get; set; }
         }
 
@@ -47,6 +65,11 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                //agregado
+                Nombre = user.Nombre,
+                Apellido= user.Apellido,
+                //----------
+
                 PhoneNumber = phoneNumber
             };
         }
@@ -56,7 +79,7 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Incapaz de cargar usuario con ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -68,7 +91,7 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Incapaz de cargar usuario con ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -83,13 +106,26 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Error inesperado mientras intentaba guardar número de celular.";
                     return RedirectToPage();
                 }
             }
 
+            //agregado
+            if (Input.Nombre != user.Nombre)
+            {
+                user.Nombre = Input.Nombre;
+            }
+
+            if (Input.Apellido != user.Apellido)
+            {
+                user.Apellido = Input.Apellido;
+            }
+            await _userManager.UpdateAsync(user);
+            //-------------se agrego hasta aca----------------
+
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Su perfil ha sido actualizado";
             return RedirectToPage();
         }
     }

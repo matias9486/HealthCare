@@ -31,7 +31,7 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "{0} es requerido.")]
             [EmailAddress]
             public string Email { get; set; }
         }
@@ -59,8 +59,8 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Cambiar Contraseña",
+                    $"Por favor cambie su contraseña  <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tocando aquí</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

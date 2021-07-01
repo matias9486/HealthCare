@@ -16,6 +16,8 @@ namespace HealthCare.Web.Models
         public double Precio { get; set; }
 
         public bool Activo { get; set; }
+
+        public Tratamiento(){}
         public Tratamiento(string nombre, double precio)
         {
             Nombre = nombre;
