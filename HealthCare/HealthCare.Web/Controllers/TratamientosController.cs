@@ -7,22 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCare.Web.Controllers
 {
     public class TratamientosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Usuario> _userManager; //servirá para guardar mi usuario
 
-        public TratamientosController(ApplicationDbContext context)
+        //se agrego atributo userManager al constructor para tener el usuario que esta en sesion
+        public TratamientosController(ApplicationDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;// uso el atributo y parametro que agregue para tener el usuario logueado
         }
 
         // GET: Tratamientos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tratamientos.ToListAsync());
+            //a partir del _userManager obtento el id del usuario logueado
+            var userId = _userManager.GetUserId(HttpContext.User);
+            //filtro los tratamientos por el id del usuario y que traiga a su vez el atributo Usuario con sus datos
+            var lista = await _context.Tratamientos.Where(p=>p.UsuarioCreacion.Id==userId).Include(u=>u.UsuarioCreacion).ToListAsync();
+            return View(lista);
         }
 
         // GET: Tratamientos/Details/5
@@ -34,6 +42,7 @@ namespace HealthCare.Web.Controllers
             }
 
             var tratamiento = await _context.Tratamientos
+                .Include(t => t.UsuarioCreacion)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tratamiento == null)
             {
@@ -46,6 +55,7 @@ namespace HealthCare.Web.Controllers
         // GET: Tratamientos/Create
         public IActionResult Create()
         {
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
             return View();
         }
 
@@ -54,14 +64,19 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,Activo,UsuarioCreacionId")] Tratamiento tratamiento)
         public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,Activo")] Tratamiento tratamiento)
         {
             if (ModelState.IsValid)
             {
+                //al atributo UsuarioCreacionId, le asigno el id del usuario logueado
+                tratamiento.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+
                 _context.Add(tratamiento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", tratamiento.UsuarioCreacionId);
             return View(tratamiento);
         }
 
@@ -78,6 +93,7 @@ namespace HealthCare.Web.Controllers
             {
                 return NotFound();
             }
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", tratamiento.UsuarioCreacionId);
             return View(tratamiento);
         }
 
@@ -86,7 +102,7 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,Activo")] Tratamiento tratamiento)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,Activo,UsuarioCreacionId")] Tratamiento tratamiento)
         {
             if (id != tratamiento.Id)
             {
@@ -113,6 +129,7 @@ namespace HealthCare.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", tratamiento.UsuarioCreacionId);
             return View(tratamiento);
         }
 
@@ -125,6 +142,7 @@ namespace HealthCare.Web.Controllers
             }
 
             var tratamiento = await _context.Tratamientos
+                .Include(t => t.UsuarioCreacion)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tratamiento == null)
             {
@@ -140,7 +158,7 @@ namespace HealthCare.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tratamiento = await _context.Tratamientos.FindAsync(id);
-            _context.Tratamientos.Remove(tratamiento);
+            _context.Tratamientos.Remove(tratamiento); 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

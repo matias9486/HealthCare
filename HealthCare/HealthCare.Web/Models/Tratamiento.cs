@@ -17,6 +17,9 @@ namespace HealthCare.Web.Models
 
         public bool Activo { get; set; }
 
+        public string UsuarioCreacionId { get; set; }
+        public Usuario UsuarioCreacion { get; set; }
+
         public Tratamiento(){}
         public Tratamiento(string nombre, double precio)
         {

@@ -22,6 +22,7 @@ namespace HealthCare.Web.Data
         //Se agrego para los usuarios
         public DbSet<HealthCare.Web.Models.Tratamiento> Tratamientos { get; set; }
 
+        
        
     }
 }
