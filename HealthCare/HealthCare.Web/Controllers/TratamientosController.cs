@@ -74,6 +74,10 @@ namespace HealthCare.Web.Controllers
 
                 _context.Add(tratamiento);
                 await _context.SaveChangesAsync();
+                //agregado
+                TempData["mensaje"] = "Se agregó Tratamiento con éxito.";
+                TempData["tipo"] = "alert-success";
+                //-------------------------------------
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", tratamiento.UsuarioCreacionId);
@@ -115,6 +119,11 @@ namespace HealthCare.Web.Controllers
                 {
                     _context.Update(tratamiento);
                     await _context.SaveChangesAsync();
+
+                    //agregado
+                    TempData["mensaje"] = "Se modificó Tratamiento con éxito.";
+                    TempData["tipo"] = "alert-success";
+                    //----------------------------------------
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,9 +167,34 @@ namespace HealthCare.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tratamiento = await _context.Tratamientos.FindAsync(id);
-            _context.Tratamientos.Remove(tratamiento); 
+            tratamiento.Activo = false;
+            _context.Update(tratamiento);
+            //_context.Tratamientos.Remove(tratamiento); 
             await _context.SaveChangesAsync();
+
+            //agregado
+            TempData["mensaje"] = "Se eliminó Tratamiento con éxito.";
+            TempData["tipo"] = "alert-success";
             return RedirectToAction(nameof(Index));
+
+            //Una expresión nameof genera el nombre de una variable, un tipo o un miembro como constante de cadena. Muestra como string
+        }
+
+        //mi metodo eliminar para que no sea POST
+        public async Task<IActionResult> myDelete(int id)
+        {
+            var tratamiento = await _context.Tratamientos.FindAsync(id);
+            tratamiento.Activo = false;
+            _context.Update(tratamiento);
+            //_context.Tratamientos.Remove(tratamiento); 
+            await _context.SaveChangesAsync();
+
+            //agregado
+            TempData["mensaje"] = "Se eliminó Tratamiento con éxito.";
+            TempData["tipo"] = "alert-success";
+            return RedirectToAction(nameof(Index));
+
+            //Una expresión nameof genera el nombre de una variable, un tipo o un miembro como constante de cadena. Muestra como string
         }
 
         private bool TratamientoExists(int id)

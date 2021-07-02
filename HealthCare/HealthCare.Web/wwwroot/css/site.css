@@ -15,7 +15,25 @@
     }
 }
 
+.btn-chartreuse {
+    background-color: #b8f243;
+    color: white;
+    
+}
 
+.text-sombreado {
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.bordeColor {
+    background-color:black;
+    border-color:transparent;
+    border-left-color:chartreuse!important;
+    border-left:solid;
+    border-left-width:8px;
+    color:white;
+     
+}
 
 
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification

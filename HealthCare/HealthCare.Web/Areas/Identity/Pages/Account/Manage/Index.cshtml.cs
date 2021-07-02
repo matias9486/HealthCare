@@ -52,7 +52,7 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account.Manage
             
             [Phone(ErrorMessage ="El Número Celular no es un número de celular válido.")]            
             [Display(Name = "Número Celular")]
-            [Required(ErrorMessage = "{0} es requerido.")]
+//            [Required(ErrorMessage = "{0} es requerido.")]
             public string PhoneNumber { get; set; }
         }
 

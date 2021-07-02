@@ -12,7 +12,15 @@ namespace HealthCare.Web.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Display(Name = "Nombre")]
+        [Required(ErrorMessage = "{0} es requerido.")]
         public string Nombre { get; set; }
+
+        [Display(Name = "Precio")]
+        [Required(ErrorMessage = "{0} es requerido.")]
+        //[Range(1, 1000, ErrorMessage =" {0} debe estar entre {1} y {1000}.")]
+        
         public double Precio { get; set; }
 
         public bool Activo { get; set; }
