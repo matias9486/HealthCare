@@ -10,23 +10,23 @@ using HealthCare.Web.Models;
 
 namespace HealthCare.Web.Controllers
 {
-    public class ProductosController : Controller
+    public class PatologiasController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductosController(ApplicationDbContext context)
+        public PatologiasController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Productos
+        // GET: Patologias
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Productos.Include(p => p.UsuarioCreacion);
+            var applicationDbContext = _context.Patologias.Include(p => p.Tipo).Include(p => p.UsuarioCreacion);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Productos/Details/5
+        // GET: Patologias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,45 @@ namespace HealthCare.Web.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos
+            var patologia = await _context.Patologias
+                .Include(p => p.Tipo)
                 .Include(p => p.UsuarioCreacion)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (producto == null)
+            if (patologia == null)
             {
                 return NotFound();
             }
 
-            return View(producto);
+            return View(patologia);
         }
 
-        // GET: Productos/Create
+        // GET: Patologias/Create
         public IActionResult Create()
         {
+            ViewData["TipoId"] = new SelectList(_context.TipoPatologias, "Id", "Nombre");
             ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
             return View();
         }
 
-        // POST: Productos/Create
+        // POST: Patologias/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
+        public async Task<IActionResult> Create([Bind("TipoId,Id,Nombre,Activo,UsuarioCreacionId")] Patologia patologia)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(producto);
+                _context.Add(patologia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
-            return View(producto);
+            ViewData["TipoId"] = new SelectList(_context.TipoPatologias, "Id", "Nombre", patologia.TipoId);
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", patologia.UsuarioCreacionId);
+            return View(patologia);
         }
 
-        // GET: Productos/Edit/5
+        // GET: Patologias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +80,24 @@ namespace HealthCare.Web.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto == null)
+            var patologia = await _context.Patologias.FindAsync(id);
+            if (patologia == null)
             {
                 return NotFound();
             }
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
-            return View(producto);
+            ViewData["TipoId"] = new SelectList(_context.TipoPatologias, "Id", "Nombre", patologia.TipoId);
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", patologia.UsuarioCreacionId);
+            return View(patologia);
         }
 
-        // POST: Productos/Edit/5
+        // POST: Patologias/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("TipoId,Id,Nombre,Activo,UsuarioCreacionId")] Patologia patologia)
         {
-            if (id != producto.Id)
+            if (id != patologia.Id)
             {
                 return NotFound();
             }
@@ -102,12 +106,12 @@ namespace HealthCare.Web.Controllers
             {
                 try
                 {
-                    _context.Update(producto);
+                    _context.Update(patologia);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductoExists(producto.Id))
+                    if (!PatologiaExists(patologia.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +122,12 @@ namespace HealthCare.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
-            return View(producto);
+            ViewData["TipoId"] = new SelectList(_context.TipoPatologias, "Id", "Nombre", patologia.TipoId);
+            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", patologia.UsuarioCreacionId);
+            return View(patologia);
         }
 
-        // GET: Productos/Delete/5
+        // GET: Patologias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +135,32 @@ namespace HealthCare.Web.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Productos
+            var patologia = await _context.Patologias
+                .Include(p => p.Tipo)
                 .Include(p => p.UsuarioCreacion)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (producto == null)
+            if (patologia == null)
             {
                 return NotFound();
             }
 
-            return View(producto);
+            return View(patologia);
         }
 
-        // POST: Productos/Delete/5
+        // POST: Patologias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var producto = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(producto);
+            var patologia = await _context.Patologias.FindAsync(id);
+            _context.Patologias.Remove(patologia);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductoExists(int id)
+        private bool PatologiaExists(int id)
         {
-            return _context.Productos.Any(e => e.Id == id);
+            return _context.Patologias.Any(e => e.Id == id);
         }
     }
 }

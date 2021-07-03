@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HealthCare.Web.Models
 {
-    public class Producto:ModelBasePrecio
+    public class TipoPatologia:ModelBase
     {
     }
 }

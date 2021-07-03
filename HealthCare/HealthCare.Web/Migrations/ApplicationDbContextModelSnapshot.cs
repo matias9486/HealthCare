@@ -4,22 +4,49 @@ using HealthCare.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HealthCare.Web.Data.Migrations
+namespace HealthCare.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210701012057_se_agrego_propiedad_UsuarioCreacion_para_guardar_quien_hace_alta")]
-    partial class se_agrego_propiedad_UsuarioCreacion_para_guardar_quien_hace_alta
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("HealthCare.Web.Models.Patologia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsuarioCreacionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoId");
+
+                    b.HasIndex("UsuarioCreacionId");
+
+                    b.ToTable("Patologias");
+                });
 
             modelBuilder.Entity("HealthCare.Web.Models.Producto", b =>
                 {
@@ -32,14 +59,44 @@ namespace HealthCare.Web.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Precio")
                         .HasColumnType("float");
 
+                    b.Property<string>("UsuarioCreacionId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioCreacionId");
+
                     b.ToTable("Productos");
+                });
+
+            modelBuilder.Entity("HealthCare.Web.Models.TipoPatologia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsuarioCreacionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioCreacionId");
+
+                    b.ToTable("TipoPatologias");
                 });
 
             modelBuilder.Entity("HealthCare.Web.Models.Tratamiento", b =>
@@ -53,6 +110,7 @@ namespace HealthCare.Web.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Precio")
@@ -272,6 +330,41 @@ namespace HealthCare.Web.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("HealthCare.Web.Models.Patologia", b =>
+                {
+                    b.HasOne("HealthCare.Web.Models.TipoPatologia", "Tipo")
+                        .WithMany()
+                        .HasForeignKey("TipoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthCare.Web.Models.Usuario", "UsuarioCreacion")
+                        .WithMany()
+                        .HasForeignKey("UsuarioCreacionId");
+
+                    b.Navigation("Tipo");
+
+                    b.Navigation("UsuarioCreacion");
+                });
+
+            modelBuilder.Entity("HealthCare.Web.Models.Producto", b =>
+                {
+                    b.HasOne("HealthCare.Web.Models.Usuario", "UsuarioCreacion")
+                        .WithMany()
+                        .HasForeignKey("UsuarioCreacionId");
+
+                    b.Navigation("UsuarioCreacion");
+                });
+
+            modelBuilder.Entity("HealthCare.Web.Models.TipoPatologia", b =>
+                {
+                    b.HasOne("HealthCare.Web.Models.Usuario", "UsuarioCreacion")
+                        .WithMany()
+                        .HasForeignKey("UsuarioCreacionId");
+
+                    b.Navigation("UsuarioCreacion");
                 });
 
             modelBuilder.Entity("HealthCare.Web.Models.Tratamiento", b =>

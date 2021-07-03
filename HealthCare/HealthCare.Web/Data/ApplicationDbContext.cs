@@ -19,10 +19,15 @@ namespace HealthCare.Web.Data
         //Se agrego para los usuarios
         public DbSet<Usuario> Usuarios { get; set; }
 
-        //Se agrego para los usuarios
-        public DbSet<HealthCare.Web.Models.Tratamiento> Tratamientos { get; set; }
+        //Se agrego para los tratamientos
+        public DbSet<Tratamiento> Tratamientos { get; set; }
 
-        
-       
+        //Se agrego para tipo de tipo de patologias
+        public DbSet<TipoPatologia> TipoPatologias { get; set; }
+
+        //Se agrego para tipo de patologias
+        public DbSet<Patologia> Patologias { get; set; }
+
+
     }
 }
