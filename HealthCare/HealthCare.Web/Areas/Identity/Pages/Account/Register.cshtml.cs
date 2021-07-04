@@ -48,7 +48,7 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account
         {
             [Required(ErrorMessage = "{0} es requerido.")]  //agregado para mostrar msj personalizado al no completar campo
             [Display(Name = "Nombre")]                      //texto a mostrar en el html.. vincula propiedad con texto html
-            [StringLength(100,  ErrorMessage = "La longitud  máxima de {0} es {1}.")]
+            [StringLength(100, ErrorMessage = "La longitud  máxima de {0} es {1}.")]
             public string Nombre { get; set; }
 
             [Required(ErrorMessage = "{0} es requerido.")]
@@ -58,13 +58,12 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account
 
 
             [Required(ErrorMessage = "{0} es requerido.")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Ingrese un mail válido")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "{0} es requerido.")]
-            [StringLength(100, ErrorMessage = "La contraseña {0} debe tener al menos {2} y un máximo de {1} caracteres.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
+            [Required(ErrorMessage = "{0} es requerido.")]            
+            [DataType(DataType.Password, ErrorMessage = "La contraseña debe contener....")]           
             [Display(Name = "Contraseña")]
             public string Password { get; set; }
 

@@ -13,3 +13,15 @@ $(document).ready(function () {
 
 });
 
+//funcion para cambiar comportamiento segun resolucion
+function myFunction(x) {
+    if (x.matches) { // If media query matches        
+        $('.miClass').hide();        
+    } else {
+        $('.miClass').show();        
+    }
+}
+
+var x = window.matchMedia("(max-width: 770px)")
+myFunction(x) // Call listener function at run time
+x.addListener(myFunction) // Attach listener function on state changes

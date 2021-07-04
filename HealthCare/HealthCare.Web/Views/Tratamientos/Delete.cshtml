@@ -21,61 +21,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Precio)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Activo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Activo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UsuarioCreacion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UsuarioCreacion.Id)            
-        </dd>
+        
     </dl>
 
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal"><i class="fas fa-trash-alt"></i> Eliminar</button>
-    @{
-/*
-<form asp-action="Delete">
-    <input type="hidden" asp-for="Id" />
-    <input type="submit" value="Delete" class="btn btn-danger" /> |
-    <a asp-action="Index">Back to List</a>
-</form> */
-    }
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-primary" />
+        <a class="btn btn-primary " asp-action="Index">Volver a Lista</a>
+    </form>
+    
 </div>
 
-<div>
-    <a asp-action="Index">Volver a lista</a>
-</div>
-
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header bg-dark text-white">
-                <h4 class="modal-title">Confirmación</h4>
-                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                ¿Desea eliminar el registro seleccionado?
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <a class="btn btn-danger text-sombreado" asp-action="Delete" asp-route-id="@id"><i class="fas fa-trash-alt"></i> Eliminar</a>                
-                <form asp-action="Delete">
-                    <input type="hidden" asp-for="Id" />
-                    <input type="submit" value="EliminarPost" class="btn btn-danger" /> |                    
-                </form>
-
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-            </div>
-
-        </div>
-    </div>
-</div>

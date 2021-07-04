@@ -21,9 +21,17 @@
     
 }
 
+    .btn-chartreuse:hover {
+        background-color: #bbe95e;
+        color: white;
+    }
+
 .text-sombreado {
     text-shadow: 2px 2px 4px #000000;
 }
+
+/*clase creada para mostrar u ocultar componente*/
+.miClass{}
 
 .bordeColor {
     background-color:black;

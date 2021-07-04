@@ -44,7 +44,7 @@ namespace HealthCare.Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required(ErrorMessage = "{0} es requerido.")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage="Ingrese un mail válido")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "{0} es requerido.")]
