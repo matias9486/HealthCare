@@ -7,23 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCare.Web.Controllers
 {
     public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ProductosController(ApplicationDbContext context)
+        private readonly UserManager<Usuario> _userManager; 
+        public ProductosController(ApplicationDbContext context,UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Productos
         public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Productos.Include(p => p.UsuarioCreacion);
-            return View(await applicationDbContext.ToListAsync());
+        {            
+            var userId = _userManager.GetUserId(HttpContext.User);            
+            var lista = await _context.Productos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).Include(u => u.UsuarioCreacion).ToListAsync();
+            return View(lista);
         }
 
         // GET: Productos/Details/5
@@ -57,15 +60,25 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
+        //public async Task<IActionResult> Create([Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Precio,Id,Nombre")] Producto producto)
         {
             if (ModelState.IsValid)
             {
+                
+                producto.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+                producto.Activo = true;
+
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
+
+                //agregado
+                TempData["mensaje"] = "Se agregó Tratamiento con éxito.";
+                TempData["tipo"] = "alert-success";
+                //-------------------------------------
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
+            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
             return View(producto);
         }
 
@@ -82,7 +95,7 @@ namespace HealthCare.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
+            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
             return View(producto);
         }
 
@@ -91,7 +104,8 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
+        //public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre")] Producto producto)
         {
             if (id != producto.Id)
             {
@@ -102,8 +116,17 @@ namespace HealthCare.Web.Controllers
             {
                 try
                 {
+                    //agregado
+                    producto.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+                    producto.Activo = true;
+
                     _context.Update(producto);
                     await _context.SaveChangesAsync();
+
+                    //agregado
+                    TempData["mensaje"] = "Se modificó Tratamiento con éxito.";
+                    TempData["tipo"] = "alert-success";
+                    //----------------------------------------
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +141,7 @@ namespace HealthCare.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
+            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
             return View(producto);
         }
 
@@ -147,8 +170,18 @@ namespace HealthCare.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var producto = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(producto);
+
+            //agregado para poner como inactivo el registro sin eliminarlo. Baja lógica
+            producto.Activo = false;
+            _context.Update(producto);
+
+            //_context.Productos.Remove(producto);
             await _context.SaveChangesAsync();
+
+            //agregado
+            TempData["mensaje"] = "Se eliminó Tratamiento con éxito.";
+            TempData["tipo"] = "alert-success";
+
             return RedirectToAction(nameof(Index));
         }
 
