@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCare.Web.Controllers
 {
     public class PatologiasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public PatologiasController(ApplicationDbContext context)
+        public PatologiasController(ApplicationDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Patologias
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Patologias.Include(p => p.Tipo).Include(p => p.UsuarioCreacion);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var lista = await _context.Patologias.Include(t=>t.Tipo).Include(u => u.UsuarioCreacion).Where(p => p.UsuarioCreacionId == userId && p.Activo == true).ToListAsync();            
+            return View(lista);
         }
 
         // GET: Patologias/Details/5
@@ -49,7 +53,8 @@ namespace HealthCare.Web.Controllers
         // GET: Patologias/Create
         public IActionResult Create()
         {
-            ViewData["TipoId"] = new SelectList(_context.TipoPatologias, "Id", "Nombre");
+            //filtre la lista de tipos para que figuren los activos
+            ViewData["TipoId"] = new SelectList(_context.TipoPatologias.Where(t=>t.Activo==true), "Id", "Nombre");
             ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
             return View();
         }
@@ -59,12 +64,22 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TipoId,Id,Nombre,Activo,UsuarioCreacionId")] Patologia patologia)
+        //public async Task<IActionResult> Create([Bind("TipoId,Id,Nombre,Activo,UsuarioCreacionId")] Patologia patologia)
+        public async Task<IActionResult> Create([Bind("TipoId,Id,Nombre")] Patologia patologia)
         {
             if (ModelState.IsValid)
             {
+                patologia.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+                patologia.Activo = true;
+
                 _context.Add(patologia);
                 await _context.SaveChangesAsync();
+
+                //agregado
+                TempData["mensaje"] = "Se agregó Patología con éxito.";
+                TempData["tipo"] = "alert-success";
+                //-------------------------------------       
+                
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TipoId"] = new SelectList(_context.TipoPatologias, "Id", "Nombre", patologia.TipoId);
@@ -95,7 +110,8 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TipoId,Id,Nombre,Activo,UsuarioCreacionId")] Patologia patologia)
+        //public async Task<IActionResult> Edit(int id, [Bind("TipoId,Id,Nombre,Activo,UsuarioCreacionId")] Patologia patologia)
+        public async Task<IActionResult> Edit(int id, [Bind("TipoId,Id,Nombre")] Patologia patologia)
         {
             if (id != patologia.Id)
             {
@@ -106,8 +122,19 @@ namespace HealthCare.Web.Controllers
             {
                 try
                 {
+                    //agregado
+                    patologia.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+                    patologia.Activo = true;
+
                     _context.Update(patologia);
                     await _context.SaveChangesAsync();
+
+                    //agregado
+                    TempData["mensaje"] = "Se modificó Patología con éxito.";
+                    TempData["tipo"] = "alert-success";
+                    //----------------------------------------                    
+
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -153,8 +180,18 @@ namespace HealthCare.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var patologia = await _context.Patologias.FindAsync(id);
-            _context.Patologias.Remove(patologia);
+
+            //agregado para poner como inactivo el registro sin eliminarlo. Baja lógica
+            patologia.Activo = false;
+            _context.Update(patologia);
+
+            //_context.Patologias.Remove(patologia);
             await _context.SaveChangesAsync();
+
+            //agregado
+            TempData["mensaje"] = "Se eliminó Patología con éxito.";
+            TempData["tipo"] = "alert-success";
+                        
             return RedirectToAction(nameof(Index));
         }
 
