@@ -155,6 +155,31 @@ namespace HealthCare.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Paciente",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Activo = table.Column<bool>(type: "bit", nullable: false),
+                    UsuarioCreacionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Imagen = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Paciente", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Paciente_AspNetUsers_UsuarioCreacionId",
+                        column: x => x.UsuarioCreacionId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Productos",
                 columns: table => new
                 {
@@ -287,6 +312,11 @@ namespace HealthCare.Web.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Paciente_UsuarioCreacionId",
+                table: "Paciente",
+                column: "UsuarioCreacionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Patologias_TipoId",
                 table: "Patologias",
                 column: "TipoId");
@@ -328,6 +358,9 @@ namespace HealthCare.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Paciente");
 
             migrationBuilder.DropTable(
                 name: "Patologias");
