@@ -25,29 +25,3 @@ function myFunction(x) {
 var x = window.matchMedia("(max-width: 770px)")
 myFunction(x) // Call listener function at run time
 x.addListener(myFunction) // Attach listener function on state changes
-
-
-
-//ajax para obtener lista de patologias filtradas
-const getPatologias = () => {
-
-    let config = {
-        type: 'get',    //puedo usar get  y pasar el id en la url.. o post y usar el atributo data para enviar el id        
-        url: "/Patologias/GetAll", // Url                
-        data: {
-            Tipo: "1", // Parámetros            
-        },
-        dataType: 'json',
-
-        success: (respuesta) => {                     
-            $.each(respuesta, (indice, elemento) => {                
-                alert(elemento.nombre);                
-            });    
-        },        
-        error: () => {
-            alert("Error al ejecutar la api");
-        }
-    };    
-    $.ajax(config);
-}
-

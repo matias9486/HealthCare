@@ -22,6 +22,20 @@ namespace HealthCare.Web.Controllers
             _userManager = userManager;
         }
 
+
+        //mi accion para filtrar patologias por Tipo
+        public List<Patologia> GetAll()
+        {
+            return _context.Patologias.ToList();
+        }
+        public List<Patologia> filtrarPatologias(int Tipo)
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var lista =  _context.Patologias.Where(p => p.UsuarioCreacionId == userId && p.Activo == true ).ToList();
+            return lista;
+        }
+
+
         // GET: Patologias
         public async Task<IActionResult> Index()
         {
@@ -54,7 +68,19 @@ namespace HealthCare.Web.Controllers
         public IActionResult Create()
         {
             //filtre la lista de tipos para que figuren los activos
-            ViewData["TipoId"] = new SelectList(_context.TipoPatologias.Where(t=>t.Activo==true), "Id", "Nombre");
+            var userId = _userManager.GetUserId(HttpContext.User);            
+            var probar = _context.TipoPatologias.Where(t => t.Activo == true && t.UsuarioCreacion.Id == userId);
+
+            //agregado para controlar exitencia tipo de patologías
+            if(probar.Count()==0)
+            {
+                TempData["mensaje"] = "Agregué un Tipo de Patología primero.";
+                TempData["tipo"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
+
+            ViewData["TipoId"] = new SelectList(probar, "Id", "Nombre");
+            //ViewData["UsuarioCreacionId"] = new SelectList(_context.TipoPatologias, "Id", "Id");
             ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
             return View();
         }

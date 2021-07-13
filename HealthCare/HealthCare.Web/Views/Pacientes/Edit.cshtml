@@ -1,63 +1,153 @@
 ﻿@model HealthCare.Web.Models.Paciente
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Pacientes";
+    ViewData["TituloOperacion"] = "Modificar Paciente";
+
 }
 
-<h1>Edit</h1>
 
-<h4>Paciente</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Imagen" class="control-label"></label>
-                <input asp-for="Imagen" class="form-control" />
-                <span asp-validation-for="Imagen" class="text-danger"></span>
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group text-center">
+                    <label asp-for="Imagen" style="width: 100%;"></label>
+
+                    @{
+
+                        @if (@Model.Imagen != null)
+                        {
+                            <img class="img-rounded img-fluid" id="profilePicture" style="width:250px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.Imagen))">
+                        }
+                        else
+                        {
+                            <img class="img-rounded img-fluid" id="profilePicture" style="width:250px;height:250px; object-fit:cover" src="">
+                        }
+
+                    }
+
+                    <input type="file"
+                           accept=".png,.jpg,.jpeg,.gif,.tif"
+                           asp-for="Imagen"
+                           class="form-control"
+                           style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                           onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="Imagen" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
+
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Apellido" class="form-control" placeholder="" />
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Nombre" class="form-control" placeholder="" />
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="FechaNacimiento" class="form-control" />
+                    <label asp-for="FechaNacimiento" class="control-label"></label>
+                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Direccion" class="form-control" placeholder="" />
+                    <label asp-for="Direccion" class="control-label"></label>
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                    <a class="btn btn-primary" asp-action="Index">Volver a Lista</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
-                <span asp-validation-for="Direccion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioCreacionId" class="control-label"></label>
-                <select asp-for="UsuarioCreacionId" class="form-control" asp-items="ViewBag.UsuarioCreacionId"></select>
-                <span asp-validation-for="UsuarioCreacionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@{
+
+    /*
+    <div class="row">
+        <div class="col-md-4">
+
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Imagen" style="width: 100%;"></label>
+
+                        @{
+
+                            @if (@Model.Imagen != null)
+                            {
+                                <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.Imagen))">
+                            }
+                            else
+                            {
+                                <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="">
+                            }
+
+                        }
+
+                        <input type="file"
+                               accept=".png,.jpg,.jpeg,.gif,.tif"
+                               asp-for="Imagen"
+                               class="form-control"
+                               style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                               onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                        <span asp-validation-for="Imagen" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Apellido" class="form-control" placeholder="" />
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Nombre" class="form-control" placeholder="" />
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="FechaNacimiento" class="form-control" />
+                    <label asp-for="FechaNacimiento" class="control-label"></label>
+                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Direccion" class="form-control" placeholder="" />
+                    <label asp-for="Direccion" class="control-label"></label>
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                    <a class="btn btn-primary" asp-action="Index">Volver a Lista</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    */
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

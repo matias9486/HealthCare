@@ -7,23 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCare.Web.Controllers
 {
     public class PacientesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public PacientesController(ApplicationDbContext context)
+        private readonly UserManager<Usuario> _userManager;
+        public PacientesController(ApplicationDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Pacientes
         public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Paciente.Include(p => p.UsuarioCreacion);
-            return View(await applicationDbContext.ToListAsync());
+        {            
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var lista = await _context.Paciente.Include(u => u.UsuarioCreacion).Where(p => p.UsuarioCreacionId == userId && p.Activo == true).ToListAsync();
+            return View(lista);
         }
 
         // GET: Pacientes/Details/5
@@ -61,8 +66,25 @@ namespace HealthCare.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                paciente.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+                paciente.Activo = true;
+                //agregado para ffoto
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(dataStream);
+                        paciente.Imagen = dataStream.ToArray();
+                    }                    
+                }
+                
                 _context.Add(paciente);
                 await _context.SaveChangesAsync();
+                //agregado
+                TempData["mensaje"] = "Se agregó Paciente con éxito.";
+                TempData["tipo"] = "alert-success";
+                //-------------------------------------      
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", paciente.UsuarioCreacionId);
@@ -102,8 +124,29 @@ namespace HealthCare.Web.Controllers
             {
                 try
                 {
+                    //agregado para foto
+                    if (Request.Form.Files.Count > 0)
+                    {
+                        IFormFile file = Request.Form.Files.FirstOrDefault();
+                        using (var dataStream = new MemoryStream())
+                        {
+                            await file.CopyToAsync(dataStream);
+                            paciente.Imagen = dataStream.ToArray();
+                        }
+                    }
+                    //agregado
+                    paciente.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+                    paciente.Activo = true;
+
+
                     _context.Update(paciente);
                     await _context.SaveChangesAsync();
+
+                    //agregado
+                    TempData["mensaje"] = "Se modificó Paciente con éxito.";
+                    TempData["tipo"] = "alert-success";
+                    //----------------------------------------                    
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,12 +186,23 @@ namespace HealthCare.Web.Controllers
 
         // POST: Pacientes/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var paciente = await _context.Paciente.FindAsync(id);
-            _context.Paciente.Remove(paciente);
+
+            //agregado para poner como inactivo el registro sin eliminarlo. Baja lógica
+            paciente.Activo = false;
+            _context.Update(paciente);
+
+            //_context.Paciente.Remove(paciente);
+
             await _context.SaveChangesAsync();
+
+            //agregado
+            TempData["mensaje"] = "Se eliminó Paciente con éxito.";
+            TempData["tipo"] = "alert-success";
+
             return RedirectToAction(nameof(Index));
         }
 
