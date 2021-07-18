@@ -53,34 +53,11 @@ const getPatologias = () => {
     $.ajax(config);
 }
 
-const filtrando = () => {
-
-    let config = {
-        type: 'get',    //puedo usar get  y pasar el id en la url.. o post y usar el atributo data para enviar el id        
-        url: "/Sesiones/filtrarPatologias/3", // Url                
-        /*
-        data: {
-            Tipo: "1", // Parámetros            
-        },*/
-        dataType: 'json',
-
-        success: (respuesta) => {
-            $.each(respuesta, (indice, elemento) => {
-                alert(elemento.nombre);                
-                alert("hola");
-            });
-        },
-        error: () => {
-            alert("Error al ejecutar la api");
-        }
-    };
-    $.ajax(config);
-}
 
 const filtrarPatologias = () => {
-    //const tipoId = $('#TipoPatologias').val();
+    const tipoId = $('#TipoPatologias').val();
     $.ajax({
-        url: "/Sesiones/filtrarPatologias/3", // + tipoId,
+        url: "/Sesiones/filtrarPatologias/" + tipoId,
         success: function (respuesta) {
             $.each(respuesta, (index, element) => {
                 alert(elemento.nombre);                
@@ -89,24 +66,6 @@ const filtrarPatologias = () => {
     });
 }
 
-
-
-//funciones para filtrar combos
-$(".cmborigen").change(function () {
-    fillCombo("cmbdestino", $(".cmborigen").val(), $(".cmborigen").data("id"));
-    $(".cmbdestino").change();
-});
-
-function fillCombo(updateId, value, action) {
-    $.getJSON(action
-        + "/" + value,
-        function (data) {
-            $("." + updateId).empty();
-            
-            $.each(data, function (i, item) {
-                $("." + updateId).append("<option  value='"
-                    + item.id + "'>" + item.nombre
-                    + "</option >");
-            });
-        });
+const mensaje = () => {
+    alert("Hola");
 }

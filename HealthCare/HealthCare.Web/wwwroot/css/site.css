@@ -16,31 +16,135 @@
 }
 
 .btn-chartreuse {
-    background-color: #b8f243;
+    background-color: #a0e811;/*chartreuse;*/
     color: white;
-    
 }
 
-    .btn-chartreuse:hover {
+    
+.btn-chartreuse:hover {
         background-color: #bbe95e;
-        color: white;
-    }
+        color: white;    
+}
 
 .text-sombreado {
     text-shadow: 2px 2px 4px #000000;
 }
 
+
+
 /*clase creada para mostrar u ocultar componente*/
 .miClass{}
+/*clases usadas para aplicar filtros*/
+.cmborigen {}
+.cmbdestino {}
+
+/*clases para agregar opacidad*/
+.black-opacity { /*color negro semi transaparente*/
+    background-color: rgba(0, 0, 0, 0.9)!important; 
+}
+
+.black-opacity-2 { /*color negro semi transaparente*/
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/*para aplicar borde inferior de color al pasar sobre enlace del navbar
+li > a:hover {
+    border-bottom-style: solid;
+    border-bottom-color: #b8f243;
+}
+    */
+/*para aplicar borde inferior animado al pasar sobre enlace del navbar*/
+li > a.nav-link {
+    text-decoration: none;
+    background-image: linear-gradient(#b8f243, #b8f243);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+   
+li > a.nav-link:hover{        
+    background-size: 100% 2px;
+}
+
+
+
+/*cambiar color de fila al pasar mouse*/
+.table-hover tbody tr:hover td {
+    background-color: rgba( 160, 232, 17,0.5 )!important;
+}
+
+/* cambio el fondo de todos los inputs expecto submits*/
+input:not([type="submit"]) {
+    Background-color: #f9f9f9!important;
+}
+
+    input:not([type="submit"]):focus {
+        Background-color: #f4f4f4!important;
+    }
+
+.control-label {
+    color: black !important;
+}
+
+div > label {
+    color: white !important;
+}
+
+.table-responsive {
+    color:white!important;
+}
+
+tbody > tr {
+    color:white!important;
+}
+
+/*opacity aplica a todo el contenido en cambio usar background color con opacity solo aplica al fondo y no al contenido*/
+.opacity-0 {
+    opacity: 0 !important;
+}
+
+.opacity-1 {
+    opacity: 0.2 !important;
+}
+
+.opacity-2 {
+    opacity: 0.4 !important;
+}
+
+.opacity-3 {
+    opacity: 0.6 !important;
+}
+
+.opacity-4 {
+    opacity: .8 !important;
+}
+
+.opacity-5 {
+    opacity: 1 !important;
+}
+
+/* Maybe even support hover opacity shifts */
+.opacity-0h5 {
+    opacity: 0 !important;
+    transition: opacity .25s ease-in-out !important;
+    -moz-transition: opacity .25s ease-in-out !important;
+    -webkit-transition: opacity .25s ease-in-out !important;
+}
+
+    .opacity-0h5:hover {
+        opacity: 1 !important;
+    }
+
 
 .bordeColor {
-    background-color:black;
-    border-color:transparent;
-    border-left-color:chartreuse!important;
-    border-left:solid;
-    border-left-width:8px;
-    color:white;
-     
+    background-color: black;
+    border-color: transparent;
+    border-left-color: chartreuse !important;
+    border-left: solid;
+    border-left-width: 8px;
+    color: white;
 }
 
 /*para cambiar color del borde en inputs al tener foco*/

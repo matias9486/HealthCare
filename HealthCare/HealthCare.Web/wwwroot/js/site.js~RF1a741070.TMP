@@ -102,7 +102,6 @@ function fillCombo(updateId, value, action) {
         + "/" + value,
         function (data) {
             $("." + updateId).empty();
-            
             $.each(data, function (i, item) {
                 $("." + updateId).append("<option  value='"
                     + item.id + "'>" + item.nombre

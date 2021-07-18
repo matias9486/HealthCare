@@ -1,0 +1,107 @@
+﻿@model HealthCare.Web.Models.Sesion
+
+@{ 
+    ViewData["Title"] = "Sesiones";                
+    ViewData["TituloOperacion"] = "Agregar Sesión"; 
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+
+            <fieldset>
+                <legend>Sesión</legend>
+                <div class="form-floating mb-3">
+                    <input asp-for="Fecha" class="form-control" />
+                    <label asp-for="Fecha" class="control-label"></label>
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.PacienteId"></select>
+                    <label asp-for="PacienteId" class="control-label"></label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Patología</legend>
+                <div class="form-floating mb-3">
+                    <select id="Tipos" class="form-control cmborigen" asp-items="ViewBag.TipoPatologias" data-id="@Url.ActionLink("filtrarPorTipo","Sesiones")"></select>
+                    <label for="Tipos" class="control-label">Seleccione Tipo de Patología</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select asp-for="PatologiaId" class="form-control cmbdestino" asp-items="ViewBag.PatologiaId"></select>
+                    <label asp-for="PatologiaId" class="control-label">Seleccione Patología</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Tratamiento y Producto</legend>
+                <div class="form-floating mb-3">
+                    <select asp-for="TratamientoId" class="form-control" asp-items="ViewBag.TratamientoId"></select>
+                    <label asp-for="TratamientoId" class="control-label"></label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                    <label asp-for="ProductoId" class="control-label"></label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Información opcional</legend>
+                <div class="form-floating mb-3">
+                    <input asp-for="Peso" class="form-control" placeholder="" />
+                    <label asp-for="Peso" class="control-label"></label>
+                    <span asp-validation-for="Peso" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Presion" class="form-control" placeholder="" />
+                    <label asp-for="Presion" class="control-label"></label>
+                    <span asp-validation-for="Presion" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Observaciones" class="form-control" />
+                    <label asp-for="Observaciones" class="control-label"></label>
+                    <span asp-validation-for="Observaciones" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Operaciones" class="form-control" />
+                    <label asp-for="Operaciones" class="control-label"></label>
+                    <span asp-validation-for="Operaciones" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Medicacion" class="form-control" />
+                    <label asp-for="Medicacion" class="control-label"></label>
+                    <span asp-validation-for="Medicacion" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Automedicacion" class="form-control" />
+                    <label asp-for="Automedicacion" class="control-label"></label>
+                    <span asp-validation-for="Automedicacion" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="DiagnosticoMedico" class="form-control" />
+                    <label asp-for="DiagnosticoMedico" class="control-label"></label>
+                    <span asp-validation-for="DiagnosticoMedico" class="text-danger"></span>
+                </div>
+            </fieldset>
+
+            
+
+
+            <div class="form-group mb-3">
+                <input type="submit" value="Agregar Sesión" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="Index">Volver a lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -31,6 +31,9 @@ namespace HealthCare.Web.Data
         //Se agrego para tipo de patologias
         public DbSet<Paciente> Paciente { get; set; }
 
+        //Se agrego para tipo de patologias
+        public DbSet<HealthCare.Web.Models.Sesion> Sesiones { get; set; }
+
 
     }
 }
