@@ -53,179 +53,190 @@ li > a:hover {
     border-bottom-color: #b8f243;
 }
     */
-/*para aplicar borde inferior animado al pasar sobre enlace del navbar*/
-li > a.nav-link {
-    text-decoration: none;
-    background-image: linear-gradient(#b8f243, #b8f243);
-    background-position: 0% 100%;
-    background-repeat: no-repeat;
-    background-size: 0% 2px;
-    transition: background-size .3s;
+
+/*para aplicar borde izquierdo de color al pasar sobre enlace del navbar cuando la resolucion es menor que 1200*/
+@media not (min-width:1200px) {
+    li > a.nav-link:hover {
+        border-left-style: solid;
+        border-left-color: #b8f243;
+        color: #b8f243!important;
+    }
 }
 
-   
-li > a.nav-link:hover{        
-    background-size: 100% 2px;
-}
+    /*para aplicar borde inferior animado al pasar sobre enlace del navbar cuando la resolucion es mayor que 1200*/
+    @media (min-width:1200px) {
+        li > a.nav-link {
+            text-decoration: none;
+            background-image: linear-gradient(#b8f243, #b8f243);
+            background-position: 0% 100%;
+            background-repeat: no-repeat;
+            background-size: 0% 2px;
+            transition: background-size .3s;
+        }
 
-
-
-/*cambiar color de fila al pasar mouse*/
-.table-hover tbody tr:hover td {
-    background-color: rgba( 160, 232, 17,0.5 )!important;
-}
-
-/* cambio el fondo de todos los inputs expecto submits*/
-input:not([type="submit"]) {
-    Background-color: #f9f9f9!important;
-}
-
-    input:not([type="submit"]):focus {
-        Background-color: #f4f4f4!important;
+            li > a.nav-link:hover {
+                background-size: 100% 2px;
+            }
     }
 
-.control-label {
-    color: black !important;
-}
 
-div > label {
-    color: white !important;
-}
+    /*cambiar color de fila al pasar mouse*/
+    .table-hover tbody tr:hover td {
+        background-color: rgba( 160, 232, 17,0.5 ) !important;
+    }
 
-.table-responsive {
-    color:white!important;
-}
+    /* cambio el fondo de todos los inputs expecto submits*/
+    input:not([type="submit"]) {
+        Background-color: #f9f9f9 !important;
+    }
 
-tbody > tr {
-    color:white!important;
-}
+        input:not([type="submit"]):focus {
+            Background-color: #f4f4f4 !important;
+        }
 
-/*opacity aplica a todo el contenido en cambio usar background color con opacity solo aplica al fondo y no al contenido*/
-.opacity-0 {
-    opacity: 0 !important;
-}
+    .control-label {
+        color: black !important;
+    }
 
-.opacity-1 {
-    opacity: 0.2 !important;
-}
+    div > label {
+        color: white !important;
+    }
 
-.opacity-2 {
-    opacity: 0.4 !important;
-}
+    .table-responsive {
+        color: white !important;
+    }
 
-.opacity-3 {
-    opacity: 0.6 !important;
-}
+    tbody > tr {
+        color: white !important;
+    }
 
-.opacity-4 {
-    opacity: .8 !important;
-}
+    /*opacity aplica a todo el contenido en cambio usar background color con opacity solo aplica al fondo y no al contenido*/
+    .opacity-0 {
+        opacity: 0 !important;
+    }
 
-.opacity-5 {
-    opacity: 1 !important;
-}
+    .opacity-1 {
+        opacity: 0.2 !important;
+    }
 
-/* Maybe even support hover opacity shifts */
-.opacity-0h5 {
-    opacity: 0 !important;
-    transition: opacity .25s ease-in-out !important;
-    -moz-transition: opacity .25s ease-in-out !important;
-    -webkit-transition: opacity .25s ease-in-out !important;
-}
+    .opacity-2 {
+        opacity: 0.4 !important;
+    }
 
-    .opacity-0h5:hover {
+    .opacity-3 {
+        opacity: 0.6 !important;
+    }
+
+    .opacity-4 {
+        opacity: .8 !important;
+    }
+
+    .opacity-5 {
         opacity: 1 !important;
     }
 
+    /* Maybe even support hover opacity shifts */
+    .opacity-0h5 {
+        opacity: 0 !important;
+        transition: opacity .25s ease-in-out !important;
+        -moz-transition: opacity .25s ease-in-out !important;
+        -webkit-transition: opacity .25s ease-in-out !important;
+    }
 
-.bordeColor {
-    background-color: black;
-    border-color: transparent;
-    border-left-color: chartreuse !important;
-    border-left: solid;
-    border-left-width: 8px;
-    color: white;
-}
-
-/*para cambiar color del borde en inputs al tener foco*/
-.form-control:focus {
-    border-color: #b8f243;
-    box-shadow: 0 0 0 0.2rem #daf7a6;
-} 
+        .opacity-0h5:hover {
+            opacity: 1 !important;
+        }
 
 
-/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+    .bordeColor {
+        background-color: black;
+        border-color: transparent;
+        border-left-color: chartreuse !important;
+        border-left: solid;
+        border-left-width: 8px;
+        color: white;
+    }
+
+    /*para cambiar color del borde en inputs al tener foco*/
+    .form-control:focus {
+        border-color: #b8f243;
+        box-shadow: 0 0 0 0.2rem #daf7a6;
+    }
+
+
+    /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
+    a.navbar-brand {
+        white-space: normal;
+        text-align: center;
+        word-break: break-all;
+    }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
+    /* Provide sufficient contrast against white background */
+    a {
+        color: #0366d6;
+    }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
+    .btn-primary {
+        color: #fff;
+        background-color: #1b6ec2;
+        border-color: #1861ac;
+    }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: #1b6ec2;
+        border-color: #1861ac;
+    }
 
-/* Sticky footer styles
+    /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+    html {
+        font-size: 14px;
+    }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
+    @media (min-width: 768px) {
+        html {
+            font-size: 16px;
+        }
+    }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+    .border-top {
+        border-top: 1px solid #e5e5e5;
+    }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
+    .border-bottom {
+        border-bottom: 1px solid #e5e5e5;
+    }
 
-/* Sticky footer styles
+    .box-shadow {
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    }
+
+    button.accept-policy {
+        font-size: 1rem;
+        line-height: inherit;
+    }
+
+    /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
+    html {
+        position: relative;
+        min-height: 100%;
+    }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+    }
 
-/*footer original de .net*/
-.footer {
-   position: absolute;
-    
-    bottom: 0;
-    width: 100%;
-    white-space: nowrap;
-    line-height: 60px; /* Vertically center the text there */
-}
+    /*footer original de .net*/
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        white-space: nowrap;
+        line-height: 60px; /* Vertically center the text there */
+    }
 
