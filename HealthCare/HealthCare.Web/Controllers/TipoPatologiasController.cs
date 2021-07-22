@@ -61,8 +61,7 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Nombre,Activo,UsuarioCreacionId")] TipoPatologia tipoPatologia)
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] TipoPatologia tipoPatologia)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Activo,UsuarioCreacionId")] TipoPatologia tipoPatologia)        
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +77,7 @@ namespace HealthCare.Web.Controllers
                 //-------------------------------------                
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", tipoPatologia.UsuarioCreacionId);
+            
             return View(tipoPatologia);
         }
 
@@ -104,8 +103,7 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Activo,UsuarioCreacionId")] TipoPatologia tipoPatologia)
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] TipoPatologia tipoPatologia)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Activo,UsuarioCreacionId")] TipoPatologia tipoPatologia)        
         {
             if (id != tipoPatologia.Id)
             {
@@ -140,8 +138,7 @@ namespace HealthCare.Web.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", tipoPatologia.UsuarioCreacionId);
+            }            
             return View(tipoPatologia);
         }
 

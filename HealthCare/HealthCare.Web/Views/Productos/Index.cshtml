@@ -19,12 +19,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Nombre)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Activo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UsuarioCreacion)
-                </th>
+                
                 <th></th>
                 <th></th>
                 <th></th>
@@ -40,12 +35,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Activo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UsuarioCreacion.Id)
-                </td>
+                
                 <td><a class="btn btn-warning text-white text-sombreado" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-pen"></i><span class="miClass"> Editar</span></a></td>
                 <td><a class="btn btn-primary text-sombreado" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-list-ul"></i><span class="miClass"> Detalles</span></a></td>
                 <td><a class="btn btn-danger text-sombreado" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i><span class="miClass"> Eliminar</span></a></td>

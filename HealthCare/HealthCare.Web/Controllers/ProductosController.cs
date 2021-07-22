@@ -60,8 +60,7 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
-        public async Task<IActionResult> Create([Bind("Precio,Id,Nombre")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
         {
             if (ModelState.IsValid)
             {
@@ -73,12 +72,12 @@ namespace HealthCare.Web.Controllers
                 await _context.SaveChangesAsync();
 
                 //agregado
-                TempData["mensaje"] = "Se agregó Tratamiento con éxito.";
+                TempData["mensaje"] = "Se agregó Producto con éxito.";
                 TempData["tipo"] = "alert-success";
                 //-------------------------------------
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
+            
             return View(producto);
         }
 
@@ -95,7 +94,7 @@ namespace HealthCare.Web.Controllers
             {
                 return NotFound();
             }
-            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
+            
             return View(producto);
         }
 
@@ -104,8 +103,7 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)
-        public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Precio,Id,Nombre,Activo,UsuarioCreacionId")] Producto producto)        
         {
             if (id != producto.Id)
             {
@@ -124,7 +122,7 @@ namespace HealthCare.Web.Controllers
                     await _context.SaveChangesAsync();
 
                     //agregado
-                    TempData["mensaje"] = "Se modificó Tratamiento con éxito.";
+                    TempData["mensaje"] = "Se modificó Producto con éxito.";
                     TempData["tipo"] = "alert-success";
                     //----------------------------------------
                 }
@@ -141,7 +139,7 @@ namespace HealthCare.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id", producto.UsuarioCreacionId);
+            
             return View(producto);
         }
 
@@ -179,7 +177,7 @@ namespace HealthCare.Web.Controllers
             await _context.SaveChangesAsync();
 
             //agregado
-            TempData["mensaje"] = "Se eliminó Tratamiento con éxito.";
+            TempData["mensaje"] = "Se eliminó Producto con éxito.";
             TempData["tipo"] = "alert-success";
 
             return RedirectToAction(nameof(Index));
