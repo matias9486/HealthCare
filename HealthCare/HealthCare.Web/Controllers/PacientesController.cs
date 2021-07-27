@@ -135,6 +135,11 @@ namespace HealthCare.Web.Controllers
                             paciente.Imagen = dataStream.ToArray();
                         }
                     }
+                    else
+                    {
+                        paciente.Imagen =_context.Paciente.AsNoTracking().FirstOrDefault(p=>p.Id==id).Imagen;
+                    }
+
                     //agregado
                     paciente.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
                     paciente.Activo = true;

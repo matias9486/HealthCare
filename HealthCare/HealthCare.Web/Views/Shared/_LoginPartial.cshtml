@@ -8,6 +8,7 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+    
     <li class="nav-item">
         @{ //se reemplazo @User.Identity.Name!  por @UserManager.GetUserAsync(User).Result.Nombre para poder usar mi clase usuario
            }
