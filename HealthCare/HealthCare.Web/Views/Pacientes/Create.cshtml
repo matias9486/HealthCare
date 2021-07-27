@@ -8,63 +8,72 @@
 
 
 
-    <div class="row">
-        <div class="col-md-4">
+    <div class="row">       
             <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
-
-                <div class="col-md-6">
+            
+                <div class="row">
+                    <div class="col-md-5 text-center">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="Imagen" style="width: 100%;"></label>
 
-                        
-                        <img id="profilePicture" style="width:250px;height:250px; object-fit:cover" src="">
-                        <input type="file"
-                               accept=".png,.jpg,.jpeg,.gif,.tif"
-                               asp-for="Imagen"
-                               class="form-control"
-                               style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                               onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                        @{ //                 <label asp-for="Imagen" style="width: 100%;"></label>
+                        }
+                        <img class="rounded-circle" id="profilePicture" style="width: 250px; height: 250px; object-fit: cover;" src="~/Images/avatar2.jpg">
+                        <span>
+                            <input type="file"
+                                   id="subirArchivo"
+                                   name="subirArchivo"
+                                   accept=".png,.jpg,.jpeg,.gif,.tif"
+                                   asp-for="Imagen"
+                                   class="form-control"
+                                   style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                                   onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                        </span>
                         <span asp-validation-for="Imagen" class="text-danger"></span>
+
+
+                        <label class="btn btn-primary mb-3 mt-3" for="subirArchivo">
+                            <span><i class="fas fa-arrow-up"></i> Subir foto de perfil</span>
+                        </label>
                     </div>
                 </div>
 
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Apellido" class="form-control" placeholder="" />
+                            <label asp-for="Apellido" class="control-label"></label>
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
 
-                <div class="form-floating mb-3">
-                    <input asp-for="Apellido" class="form-control" placeholder="" />
-                    <label asp-for="Apellido" class="control-label"></label>
-                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Nombre" class="form-control" placeholder="" />
+                            <label asp-for="Nombre" class="control-label"></label>
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="FechaNacimiento" class="form-control" placeholder="" />
+                            <label asp-for="FechaNacimiento" class="control-label"></label>
+                            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Direccion" class="form-control" placeholder="" />
+                            <label asp-for="Direccion" class="control-label"></label>
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <input type="submit" value="Guardar" class="btn btn-primary" />
+                            <a class="btn btn-primary" asp-action="Index">Volver a Lista</a>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Direccion" class="form-control" placeholder=""/>
-                    <label asp-for="Direccion" class="control-label"></label>
-                    <span asp-validation-for="Direccion" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="FechaNacimiento" class="form-control" placeholder=""/>
-                    <label asp-for="FechaNacimiento" class="control-label"></label>
-                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Nombre" class="form-control" placeholder=""/>
-                    <label asp-for="Nombre" class="control-label"></label>
-                    <span asp-validation-for="Nombre" class="text-danger"></span>
-                </div>
-
                 
-                <div class="form-group">
-                    <input type="submit" value="Guardar" class="btn btn-chartreuse text-sombreado" />
-                    <a class="btn btn-chartreuse text-sombreado" asp-action="Index">Volver a Lista</a>
-                </div>
-
             </form>
-        </div>
+        
     </div>
 
 

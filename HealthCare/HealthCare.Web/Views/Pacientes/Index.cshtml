@@ -33,12 +33,7 @@
                     @Html.DisplayNameFor(model => model.Direccion)
                 </th>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.Activo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UsuarioCreacion)
-                </th>
+                
                 <th></th>
                 <th></th>
                 <th></th>
@@ -48,9 +43,16 @@
             @foreach (var item in Model)
             {
             <tr>
-                <td>
-                    @{ //@Html.DisplayFor(modelItem => item.Imagen)
+                <td class="text-center">
+                    
+                    @if (item.Imagen != null)
+                    {
+                        <img class="rounded-circle" id="profilePicture" style="width:40px;height:40px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Imagen))"> }
+                    else
+                    {
+                        <img class="rounded-circle" id="profilePicture" style="width:40px;height:40px; object-fit:cover" src="~/Images/avatar2.jpg">
                     }
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Apellido)
@@ -65,12 +67,7 @@
                     @Html.DisplayFor(modelItem => item.Direccion)
                 </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Activo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UsuarioCreacion.Id)
-                </td>
+                
                 <td><a class="btn btn-warning text-white text-sombreado" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-pen"></i><span class="miClass"> Editar</span></a></td>
                 <td><a class="btn btn-primary text-sombreado" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-list-ul"></i><span class="miClass"> Detalles</span></a></td>
                 <td><a class="btn btn-danger text-sombreado" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i><span class="miClass"> Eliminar</span></a></td>

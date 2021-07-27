@@ -113,7 +113,8 @@ namespace HealthCare.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Imagen,Apellido,Direccion,FechaNacimiento,Id,Nombre,Activo,UsuarioCreacionId")] Paciente paciente)
+        //public async Task<IActionResult> Edit(int id, [Bind("Imagen,Apellido,Direccion,FechaNacimiento,Id,Nombre,Activo,UsuarioCreacionId")] Paciente paciente)
+        public async Task<IActionResult> Edit(int id, [Bind("Apellido,Direccion,FechaNacimiento,Id,Nombre,Activo,UsuarioCreacionId")] Paciente paciente)
         {
             if (id != paciente.Id)
             {
@@ -138,6 +139,7 @@ namespace HealthCare.Web.Controllers
                     paciente.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
                     paciente.Activo = true;
 
+                    
 
                     _context.Update(paciente);
                     await _context.SaveChangesAsync();

@@ -38,6 +38,7 @@
     color: #FFC300!important;
 }
 
+
 /*clase creada para mostrar u ocultar componente*/
 .miClass{}
 /*clases usadas para aplicar filtros*/
@@ -92,14 +93,50 @@ li > a:hover {
     }
 
     /* cambio el fondo de todos los inputs expecto submits*/
+
+/*
     input:not([type="submit"]) {
         Background-color: #f9f9f9 !important;
     }
 
-        input:not([type="submit"]):focus {
-            Background-color: #f4f4f4 !important;
-        }
+    input:not([type="submit"]):focus {
+            Background-color: #f4f4f4 !important;        
+    }
+        */
 
+/*
+input[type="file"] {
+    color: white !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+        */
+
+/*probando para ocultar input file*/
+input[type="file"]#subirArchivo{
+    width: 0.1px !important;
+    height: 0.1px !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    z-index: -1 !important;
+}
+
+/*
+label[for="subirArchivo"] {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #106BA0;
+    display: inline-block;
+    transition: all .5s;
+    cursor: pointer;
+    padding: 15px 40px !important;
+    text-transform: uppercase;
+    width: fit-content;
+    text-align: center;
+}
+
+    */
     .control-label {
         color: black !important;
     }
