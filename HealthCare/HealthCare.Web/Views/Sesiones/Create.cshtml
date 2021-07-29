@@ -1,15 +1,15 @@
 ﻿@model HealthCare.Web.Models.Sesion
 
-@{ 
-    ViewData["Title"] = "Sesiones";                
-    ViewData["TituloOperacion"] = "Agregar Sesión"; 
-}
+@{ ViewData["Title"] = "Sesiones";
+    ViewData["TituloOperacion"] = "Agregar Sesión"; }
+
+
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
 
             <fieldset>
                 <legend>Sesión</legend>
@@ -19,9 +19,10 @@
                     <span asp-validation-for="Fecha" class="text-danger"></span>
                 </div>
 
+
                 <div class="form-floating mb-3">
-                    <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.PacienteId"></select>
-                    <label asp-for="PacienteId" class="control-label"></label>
+                    <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.PacientesLista" style="height: 58px;"></select>
+                    <label asp-for="PacienteId" class="control-label">Seleccione Paciente</label>
                 </div>
             </fieldset>
 
@@ -29,10 +30,13 @@
                 <legend>Patología</legend>
                 <div class="form-floating mb-3">
                     <select id="Tipos" class="form-control cmborigen" asp-items="ViewBag.TipoPatologias" data-id="@Url.ActionLink("filtrarPorTipo","Sesiones")"></select>
-                    <label for="Tipos" class="control-label">Seleccione Tipo de Patología</label>
+                    <label for="Tipos" class="control-label">Seleccione Tipo de Patología</label>                                                                
                 </div>
-                <div class="form-floating mb-3">
-                    <select asp-for="PatologiaId" class="form-control cmbdestino" asp-items="ViewBag.PatologiaId"></select>
+
+                
+
+                <div class="form-floating mb-3" >
+                    <select asp-for="PatologiaId" class="form-control cmbdestino" asp-items="ViewBag.PatologiaId" disabled></select>
                     <label asp-for="PatologiaId" class="control-label">Seleccione Patología</label>
                 </div>
             </fieldset>
@@ -89,7 +93,7 @@
                 </div>
             </fieldset>
 
-            
+
 
 
             <div class="form-group mb-3">
@@ -101,7 +105,6 @@
 </div>
 
 
-@section Scripts {
-
+@section Scripts {        
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

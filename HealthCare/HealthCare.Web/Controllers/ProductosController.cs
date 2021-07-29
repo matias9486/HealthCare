@@ -51,7 +51,12 @@ namespace HealthCare.Web.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (_context.Productos.Where(t => t.UsuarioCreacion.Id == userId).Count() == 0)
+            {
+                TempData["mensaje"] = "Productos son los elementos adicionales que puede o no utilizar el profesional durante la sesión para realizar el tratamiento.";
+                TempData["tipo"] = "alert-primary";
+            }
             return View();
         }
 

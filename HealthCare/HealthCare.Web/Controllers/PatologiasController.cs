@@ -74,9 +74,15 @@ namespace HealthCare.Web.Controllers
             //agregado para controlar exitencia tipo de patologías
             if(probar.Count()==0)
             {
-                TempData["mensaje"] = "Agregué un Tipo de Patología primero.";
-                TempData["tipo"] = "alert-danger";
+                TempData["mensaje"] = "Agregué un Tipo de Patología antes de agregar Patologías.";
+                TempData["tipo"] = "alert-warning";
                 return RedirectToAction("Index");
+            }
+            
+            if (_context.Patologias.Where(t => t.UsuarioCreacion.Id == userId).Count() == 0)
+            {
+                TempData["mensaje"] = "Patologías es el motivo del tratamiento, dolencias o enfermedades por el cual el paciente es tratado.";
+                TempData["tipo"] = "alert-primary";
             }
 
             ViewData["TipoId"] = new SelectList(probar, "Id", "Nombre");

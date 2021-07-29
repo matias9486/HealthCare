@@ -1,10 +1,10 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
     //Peticion a API
     $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        //url: urlBase + '/DataPastel',
+        dataType: "json",        
         url:'/Dashboards/DataPastel',
         error: function () {
             alert("Ocurrio un error al consultar los datos");
@@ -53,3 +53,7 @@ function GraficaPastel(data) {
     });
 
 }
+
+
+
+   

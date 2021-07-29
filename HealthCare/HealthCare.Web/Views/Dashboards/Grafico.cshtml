@@ -1,0 +1,41 @@
+﻿
+@{ 
+    ViewData["Title"] = "Tratamientos";        
+    ViewData["TituloOperacion"] = "Gráfica Tratamientos"; 
+}
+
+
+
+<div class="row">
+    <form asp-action="Grafico" enctype="multipart/form-data">
+        
+        <div class="row">
+            
+            <div class="col-md-6">
+                
+                <div class="form-floating mb-3">
+                    <input id="fechaInicial" name="fechaInicial" type="date" class="form-control" placeholder="">                    
+                    <label for="fechaInicial" class="control-label"></label>                    
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input id="fechaFinal" name="fechaFinal" type="date" class="form-control" placeholder="">
+                    <label for="fechaFinal" class="control-label"></label>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Filtrar" class="btn btn-primary" />
+                    <a class="btn btn-primary" asp-action="Index">Volver a Lista</a>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

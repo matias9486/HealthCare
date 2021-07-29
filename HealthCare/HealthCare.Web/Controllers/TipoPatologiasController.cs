@@ -52,7 +52,12 @@ namespace HealthCare.Web.Controllers
         // GET: TipoPatologias/Create
         public IActionResult Create()
         {
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (_context.TipoPatologias.Where(t => t.UsuarioCreacion.Id == userId).Count() == 0)
+            {
+                TempData["mensaje"] = "Tipo de Patologías es una clasificación para agrupar las distintas Patologías(Motivos del tratamiento) según el criterio del profesional.";
+                TempData["tipo"] = "alert-primary";
+            }
             return View();
         }
 

@@ -30,10 +30,11 @@
     text-shadow: 2px 2px 4px #000000;
 }
 
+
 .alert-success {
     background-color: #c9ed80!important;    
 }
-
+    
 .text-danger {
     color: #FFC300!important;
 }

@@ -55,7 +55,12 @@ namespace HealthCare.Web.Controllers
         // GET: Tratamientos/Create
         public IActionResult Create()
         {
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (_context.Tratamientos.Where(t=>t.UsuarioCreacion.Id==userId).Count() == 0)
+            {
+                TempData["mensaje"] = "Tratamiento es la actividad que realizara el profesional durante la sesión al paciente para tratar su patología.";
+                TempData["tipo"] = "alert-primary";                
+            }
             return View();
         }
 

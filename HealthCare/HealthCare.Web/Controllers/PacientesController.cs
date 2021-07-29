@@ -53,7 +53,12 @@ namespace HealthCare.Web.Controllers
         // GET: Pacientes/Create
         public IActionResult Create()
         {
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (_context.Paciente.Where(t => t.UsuarioCreacion.Id == userId).Count() == 0)
+            {
+                TempData["mensaje"] = "Pacientes son las personas que reciben el tratamiento durante la sesión.";
+                TempData["tipo"] = "alert-primary";
+            }
             return View();
         }
 
@@ -145,7 +150,6 @@ namespace HealthCare.Web.Controllers
                     paciente.Activo = true;
 
                     
-
                     _context.Update(paciente);
                     await _context.SaveChangesAsync();
 

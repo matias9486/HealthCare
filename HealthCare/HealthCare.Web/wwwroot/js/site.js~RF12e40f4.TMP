@@ -97,8 +97,7 @@ const filtrarPatologias = () => {
 $(".cmborigen").change(function () {
     fillCombo("cmbdestino", $(".cmborigen").val(), $(".cmborigen").data("id"));
     $(".cmbdestino").change();
-    //$("#patologiasMostrar").show();
-    $("#PatologiaId").prop("disabled", false);
+    $("#patologiasMostrar").show();
 });
 
 function fillCombo(updateId, value, action) {

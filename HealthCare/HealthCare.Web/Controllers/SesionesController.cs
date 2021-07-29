@@ -7,17 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthCare.Web.Controllers
 {
     public class SesionesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public SesionesController(ApplicationDbContext context)
+        private readonly UserManager<Usuario> _userManager;
+        public SesionesController(ApplicationDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        
 
         //mi accion para filtrar patologias por Tipo
         public List<Patologia> GetAll()
@@ -35,16 +39,26 @@ namespace HealthCare.Web.Controllers
         //Accion para filtrar combos por tipo de patologia... FUNCIONA
         public IActionResult filtrarPorTipo(int id)
         {
-            var lista = _context.Patologias.Where(p => p.TipoId == id).ToList();//.Select(p => p.Diagnostico);
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var lista = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId == id).OrderBy(p => p.Nombre).ToList();
+                //_context.Patologias.Where(p => p.TipoId == id).ToList();
 
             return Json(lista);
         }
 
 
+        public async Task<IActionResult> Pacientes()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var lista = await _context.Paciente.Include(u => u.UsuarioCreacion).Where(p => p.UsuarioCreacionId == userId && p.Activo == true).ToListAsync();
+            return View(lista);
+        }
+
         // GET: Sesiones
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Sesiones.Include(s => s.Paciente).Include(s => s.Patologia).Include(s => s.Producto).Include(s => s.Tratamiento).Include(s => s.UsuarioCreacion);
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var applicationDbContext = _context.Sesiones.Include(s => s.Paciente).Include(s => s.Patologia).Include(s => s.Producto).Include(s => s.Tratamiento).Include(s => s.UsuarioCreacion).Where(p => p.UsuarioCreacionId == userId);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -72,15 +86,48 @@ namespace HealthCare.Web.Controllers
         }
 
         // GET: Sesiones/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido");
-            ViewData["PatologiaId"] = new SelectList(_context.Patologias, "Id", "Nombre");
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre");
-            ViewData["TratamientoId"] = new SelectList(_context.Tratamientos, "Id", "Nombre");
-            ViewData["UsuarioCreacionId"] = new SelectList(_context.Usuarios, "Id", "Id");
+            
+            var userId = _userManager.GetUserId(HttpContext.User);
+            List<SelectViewModel> pacientes = (from pac in _context.Paciente.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p=>p.Apellido)
+                                               select new SelectViewModel()
+                                                    {
+                                                        ID = pac.Id,
+                                                        Value = $"{pac.Apellido}, {pac.Nombre}"
+                                                    }
+                                                    ).ToList();
 
-            ViewBag.TipoPatologias = new SelectList(_context.TipoPatologias, "Id", "Nombre");
+
+            List<TipoPatologia>listaTipo= _context.TipoPatologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
+            
+            
+            List<Producto> listaProductos = _context.Productos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
+            List<Tratamiento> listaTratamientos = _context.Tratamientos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
+
+            if (_context.Patologias.ToList().Count > 0 || listaProductos.Count > 0 || listaTratamientos.Count > 0 || pacientes.Count > 0)
+            {
+                TempData["mensaje"] = "Antes de agregar una sesión debe agregar tratamientos, productos, tipos de patologías, patologías y pacientes.";
+                TempData["tipo"] = "alert-warning";
+                return RedirectToAction("Index");
+            }
+            //filtre las patologias por el primer tipo de patologias ademas de los filtros comunes
+            List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId == listaTipo.First().Id).OrderBy(p => p.Nombre).ToList();
+
+
+            ViewBag.PacientesLista = new SelectList(pacientes, "ID", "Value");
+            ViewBag.TipoPatologias = new SelectList(listaTipo, "Id", "Nombre");            
+            ViewData["PatologiaId"] = new SelectList(listaPatologias, "Id", "Nombre");
+            ViewData["ProductoId"] = new SelectList(listaProductos, "Id", "Nombre");
+            ViewData["TratamientoId"] = new SelectList(listaTratamientos, "Id", "Nombre");
+
+            
+            if (_context.Sesiones.Where(t => t.UsuarioCreacion.Id == userId).Count() == 0)
+            {
+                TempData["mensaje"] = "Sesiones es el periodo de tiempo durante el cual el paciente es tratado por el profesional.";
+                TempData["tipo"] = "alert-primary";
+            }
+
             return View();
         }
 
@@ -91,10 +138,16 @@ namespace HealthCare.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UsuarioCreacionId,Fecha,PacienteId,PatologiaId,TratamientoId,ProductoId,Peso,Presion,Observaciones,Operaciones,Medicacion,Automedicacion,DiagnosticoMedico")] Sesion sesion)
         {
+            sesion.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
+            
             if (ModelState.IsValid)
             {
                 _context.Add(sesion);
                 await _context.SaveChangesAsync();
+                //agregado
+                TempData["mensaje"] = "Se agregó Sesión con éxito.";
+                TempData["tipo"] = "alert-success";
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", sesion.PacienteId);
@@ -142,8 +195,13 @@ namespace HealthCare.Web.Controllers
             {
                 try
                 {
+                    sesion.UsuarioCreacionId = _userManager.GetUserId(HttpContext.User);
                     _context.Update(sesion);
                     await _context.SaveChangesAsync();
+
+                    //agregado
+                    TempData["mensaje"] = "Se modificó Sesión con éxito.";
+                    TempData["tipo"] = "alert-success";
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace HealthCare.Web.Controllers
 {
@@ -26,6 +27,7 @@ namespace HealthCare.Web.Controllers
 
             return View();
         }
+
 
         public JsonResult DataPastel()
         {
@@ -53,6 +55,7 @@ namespace HealthCare.Web.Controllers
             }
             */
 
+            /*
             List<SeriePastel> listaTratamientos= (from t in _context.Tratamientos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).ToList()
             group t by t.Nombre into grupoTratamientos
                                                  select new SeriePastel()
@@ -60,12 +63,64 @@ namespace HealthCare.Web.Controllers
                                                      name = grupoTratamientos.Key,
                                                      y = grupoTratamientos.Count(),
                                                  }).ToList();
-
             
+            List<SeriePastel> lista = (from t in _context.Sesiones.Include(t=>t.Tratamiento).Where(p => p.UsuarioCreacion.Id == userId).ToList()
+                                                   group t by t.Tratamiento.Nombre into grupo
+                                                   select new SeriePastel()
+                                                   {
+                                                       name = grupo.Key,
+                                                       y = grupo.Count(),
+                                                   }).ToList();
+            */
+            List<SeriePastel> lista = (from s in _context.Sesiones.Include(p => p.Producto).Where(p => p.UsuarioCreacion.Id == userId).ToList()
+                                       group s by s.Producto.Nombre into grupo
+                                       select new SeriePastel()
+                                       {
+                                           name = grupo.Key,
+                                           y = grupo.Count(),
+                                       }).ToList();
+
             //SeriePastel serie = new SeriePastel();
             //return Json(serie.GetDataDummy());
-            return Json(listaTratamientos);
+            return Json(lista);
         }
+
+
+        //probando
+        public IActionResult Grafico(DateTime fechaInicial,DateTime fechaFinal)
+        {                        
+            TempData["mensaje"] = "Inicial: "+ fechaInicial.ToString("yyyy/MM/dd HH:mm") + ". Final: "+ fechaFinal;
+            TempData["tipo"] = "alert-primary";
+
+
+            
+            ViewBag.Inicial = fechaInicial;
+            ViewBag.Final = fechaFinal;
+            RedirectToAction( "graficaFiltrada");
+
+            return View();
+        }
+
+        public JsonResult graficaFiltrada(DateTime inicial, DateTime final)
+        {
+            //DateTime inicial = ViewBag.Inicial;
+            //DateTime final = ViewBag.Final;
+            var userId = _userManager.GetUserId(HttpContext.User);
+            
+            List<SeriePastel> lista = (from s in _context.Sesiones.Include(p => p.Producto).Where(p => p.UsuarioCreacion.Id == userId && p.Fecha>=inicial && p.Fecha<=final).ToList()
+                                       group s by s.Producto.Nombre into grupo
+                                       select new SeriePastel()
+                                       {
+                                           name = grupo.Key,
+                                           y = grupo.Count(),
+                                       }).ToList();
+
+            
+            return Json(lista);
+        }
+
+        
+
 
     }
 }
