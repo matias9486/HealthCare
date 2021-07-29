@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthCare.Web.Controllers
 {
+    [Authorize]
     public class PatologiasController : Controller
     {
         private readonly ApplicationDbContext _context;

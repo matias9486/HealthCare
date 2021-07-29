@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthCare.Web.Controllers
 {
+    [Authorize]
     public class SesionesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -90,6 +92,7 @@ namespace HealthCare.Web.Controllers
         {
             
             var userId = _userManager.GetUserId(HttpContext.User);
+            //creo nueva lista de tipo SelectViewModel para poder mostrar en un combo mas de un atributo de pacientes
             List<SelectViewModel> pacientes = (from pac in _context.Paciente.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p=>p.Apellido)
                                                select new SelectViewModel()
                                                     {
@@ -101,18 +104,21 @@ namespace HealthCare.Web.Controllers
 
             List<TipoPatologia>listaTipo= _context.TipoPatologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
             
-            
             List<Producto> listaProductos = _context.Productos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
             List<Tratamiento> listaTratamientos = _context.Tratamientos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
 
-            if (_context.Patologias.ToList().Count > 0 || listaProductos.Count > 0 || listaTratamientos.Count > 0 || pacientes.Count > 0)
+            List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
+            
+            /*
+            if (listaPatologias.Count > 0 || listaProductos.Count > 0 || listaTratamientos.Count > 0 || pacientes.Count > 0)
             {
                 TempData["mensaje"] = "Antes de agregar una sesión debe agregar tratamientos, productos, tipos de patologías, patologías y pacientes.";
                 TempData["tipo"] = "alert-warning";
                 return RedirectToAction("Index");
             }
+            */
             //filtre las patologias por el primer tipo de patologias ademas de los filtros comunes
-            List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId == listaTipo.First().Id).OrderBy(p => p.Nombre).ToList();
+            //List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId == listaTipo.First().Id).OrderBy(p => p.Nombre).ToList();
 
 
             ViewBag.PacientesLista = new SelectList(pacientes, "ID", "Value");

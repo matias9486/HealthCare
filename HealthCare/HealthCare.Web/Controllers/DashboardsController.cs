@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthCare.Web.Controllers
 {
+    [Authorize]
     public class DashboardsController : Controller
     {
         private readonly ApplicationDbContext _context;

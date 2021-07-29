@@ -10,9 +10,11 @@ using HealthCare.Web.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthCare.Web.Controllers
 {
+    [Authorize]
     public class PacientesController : Controller
     {
         private readonly ApplicationDbContext _context;
