@@ -1,10 +1,12 @@
 using HealthCare.Web.Data;
 using HealthCare.Web.Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,9 +36,15 @@ namespace HealthCare.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             //se modifico <IdentityUser> por <Usuario> para que use nuestra clase usuario que tiene sus propios atributos y los heredados de Identity
-            services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<Usuario>(options =>
+            {                
+                options.SignIn.RequireConfirmedAccount = false;
+                
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

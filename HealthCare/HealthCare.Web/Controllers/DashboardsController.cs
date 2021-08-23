@@ -16,13 +16,12 @@ namespace HealthCare.Web.Controllers
     public class DashboardsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<Usuario> _userManager; //servirá para guardar mi usuario
-
-        //se agrego atributo userManager al constructor para tener el usuario que esta en sesion
+        private readonly UserManager<Usuario> _userManager; 
+        
         public DashboardsController(ApplicationDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
-            _userManager = userManager;// uso el atributo y parametro que agregue para tener el usuario logueado
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -34,29 +33,7 @@ namespace HealthCare.Web.Controllers
         public JsonResult DataPastel()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            //filtro los tratamientos por el id del usuario y tratamiento activo
-            //var lista =  _context.Tratamientos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).ToListAsync();
-
-            /*
-            var tratamientosPorNombre =
-                from t in lista.Result
-                group t by t.Nombre into grupoTratamientos
-                select new
-                {
-                    nombre = grupoTratamientos.Key,
-                    cantidad = grupoTratamientos.Count(),
-                };
-
-            List<SeriePastel> listaTratamientos = new List<SeriePastel>();
-            foreach (var item in tratamientosPorNombre)
-            {
-                SeriePastel serie = new SeriePastel();
-                serie.name = item.nombre;
-                serie.y = item.cantidad;
-                listaTratamientos.Add(serie);
-            }
-            */
-
+            
             /*
             List<SeriePastel> listaTratamientos= (from t in _context.Tratamientos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).ToList()
             group t by t.Nombre into grupoTratamientos
@@ -82,34 +59,23 @@ namespace HealthCare.Web.Controllers
                                            y = grupo.Count(),
                                        }).ToList();
 
-            //SeriePastel serie = new SeriePastel();
-            //return Json(serie.GetDataDummy());
+            
             return Json(lista);
         }
 
 
-        //probando
-        public IActionResult Grafico(DateTime fechaInicial,DateTime fechaFinal)
-        {                        
-            TempData["mensaje"] = "Inicial: "+ fechaInicial.ToString("yyyy/MM/dd HH:mm") + ". Final: "+ fechaFinal;
-            TempData["tipo"] = "alert-primary";
-
-
-            
-            ViewBag.Inicial = fechaInicial;
-            ViewBag.Final = fechaFinal;
-            RedirectToAction( "graficaFiltrada");
-
+        
+        public IActionResult Grafico()
+        {                                    
             return View();
         }
 
         public JsonResult graficaFiltrada(DateTime inicial, DateTime final)
         {
-            //DateTime inicial = ViewBag.Inicial;
-            //DateTime final = ViewBag.Final;
+            
             var userId = _userManager.GetUserId(HttpContext.User);
             
-            List<SeriePastel> lista = (from s in _context.Sesiones.Include(p => p.Producto).Where(p => p.UsuarioCreacion.Id == userId && p.Fecha>=inicial && p.Fecha<=final).ToList()
+            List<SeriePastel> lista = (from s in _context.Sesiones.Include(p => p.Producto).Where(p => p.UsuarioCreacion.Id == userId).Where(f=> f.Fecha>=inicial && f.Fecha<=final).ToList()
                                        group s by s.Producto.Nombre into grupo
                                        select new SeriePastel()
                                        {
@@ -117,12 +83,10 @@ namespace HealthCare.Web.Controllers
                                            y = grupo.Count(),
                                        }).ToList();
 
-            
-            return Json(lista);
+            GraficoPastel grafico = new GraficoPastel("Productos",lista);
+            //return Json(lista);
+            return Json(grafico);
         }
-
         
-
-
     }
 }

@@ -24,27 +24,12 @@ namespace HealthCare.Web.Controllers
         }
 
         
-
-        //mi accion para filtrar patologias por Tipo
-        public List<Patologia> GetAll()
-        {
-            return _context.Patologias.ToList();
-        }
-        public List<Patologia> filtrarPatologias(int Tipo)
-        {
-            //var userId = _userManager.GetUserId(HttpContext.User);
-            //var lista = _context.Patologias.Where(p => p.UsuarioCreacionId == userId && p.Activo == true).ToList();
-            var lista = _context.Patologias.Where(p => p.TipoId==Tipo).ToList();
-            return lista;
-        }
-
         //Accion para filtrar combos por tipo de patologia... FUNCIONA
         public IActionResult filtrarPorTipo(int id)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var lista = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId == id).OrderBy(p => p.Nombre).ToList();
-                //_context.Patologias.Where(p => p.TipoId == id).ToList();
-
+                
             return Json(lista);
         }
 
@@ -102,38 +87,40 @@ namespace HealthCare.Web.Controllers
                                                     ).ToList();
 
 
-            List<TipoPatologia>listaTipo= _context.TipoPatologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
-            
             List<Producto> listaProductos = _context.Productos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
             List<Tratamiento> listaTratamientos = _context.Tratamientos.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
 
-            List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).OrderBy(p => p.Nombre).ToList();
+            //recupero los id de los tipos de patologias que se usaron en las patologias segun usuario y si esta activa
+            List<int> TiposID = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).Select(p => p.TipoId).Distinct().ToList();
             
-            /*
-            if (listaPatologias.Count > 0 || listaProductos.Count > 0 || listaTratamientos.Count > 0 || pacientes.Count > 0)
+            //tipo de patologias filtrada por los tipos que estan en uso.. funciona            
+            List<TipoPatologia> listaTipo = _context.TipoPatologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true).Where(esta=> TiposID.Contains(esta.Id)).OrderBy(p => p.Nombre).ToList();
+
+            //compruebo que esten cargadas las listas. ListaPatologias, ya se tiene en cuenta al filtrar listaTipo
+            if (listaTipo.Count == 0 || listaProductos.Count == 0 || listaTratamientos.Count == 0 || pacientes.Count == 0)
             {
                 TempData["mensaje"] = "Antes de agregar una sesión debe agregar tratamientos, productos, tipos de patologías, patologías y pacientes.";
                 TempData["tipo"] = "alert-warning";
                 return RedirectToAction("Index");
             }
-            */
-            //filtre las patologias por el primer tipo de patologias ademas de los filtros comunes
-            //List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId == listaTipo.First().Id).OrderBy(p => p.Nombre).ToList();
 
-
+            //obtengo primer id de la lista Tipos
+            int idTipo = listaTipo.First().Id;
+            //filtrada por el primer tipo de patologia
+            List<Patologia> listaPatologias = _context.Patologias.Where(p => p.UsuarioCreacion.Id == userId && p.Activo == true && p.TipoId==idTipo).OrderBy(p => p.Nombre).ToList();
+                                                            
             ViewBag.PacientesLista = new SelectList(pacientes, "ID", "Value");
             ViewBag.TipoPatologias = new SelectList(listaTipo, "Id", "Nombre");            
             ViewData["PatologiaId"] = new SelectList(listaPatologias, "Id", "Nombre");
             ViewData["ProductoId"] = new SelectList(listaProductos, "Id", "Nombre");
             ViewData["TratamientoId"] = new SelectList(listaTratamientos, "Id", "Nombre");
-
             
             if (_context.Sesiones.Where(t => t.UsuarioCreacion.Id == userId).Count() == 0)
             {
                 TempData["mensaje"] = "Sesiones es el periodo de tiempo durante el cual el paciente es tratado por el profesional.";
                 TempData["tipo"] = "alert-primary";
             }
-
+                       
             return View();
         }
 

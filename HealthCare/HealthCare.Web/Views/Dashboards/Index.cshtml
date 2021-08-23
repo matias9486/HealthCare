@@ -1,4 +1,7 @@
-﻿<h3>Dashboard</h3>
+﻿@{ 
+    ViewData["Title"] = "Información";                
+    ViewData["TituloOperacion"] = "Información"; }
+
 <div id="pastel"></div>
 
 @section Scripts{
@@ -11,5 +14,5 @@
     var urlBase = 'http://' + '@Context.Request.Host' + '@Context.Request.Path'
     </script>
     <script src="~/js/Grafica.js"></script>
-    
+
 }
