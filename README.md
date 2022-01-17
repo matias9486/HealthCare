@@ -7,16 +7,16 @@ El proyecto fue realizado para la capacitación fullstack .Net de ComunidadIT. E
 <br>
 <h3>Tecnologías utilizadas 💻:</h3>
 
-[![JavaScript](https://img.shields.io/badge/Html%205-orange?style=for-the-badge&logo=html5&logoColor=orange&labelColor=black)]() 
-[![JavaScript](https://img.shields.io/badge/Css3-158ef2?style=for-the-badge&logo=css3&logoColor=158ef2&labelColor=black)]() 
+[![HTML5](https://img.shields.io/badge/Html%205-orange?style=for-the-badge&logo=html5&logoColor=orange&labelColor=black)]() 
+[![CSS3](https://img.shields.io/badge/Css3-158ef2?style=for-the-badge&logo=css3&logoColor=158ef2&labelColor=black)]() 
 [![JavaScript](https://img.shields.io/badge/JavaScript-yellow?style=for-the-badge&logo=javascript&logoColor=yellow&labelColor=black)]() 
-[![JavaScript](https://img.shields.io/badge/Bootstrap%205-8858ee?style=for-the-badge&logo=bootstrap&logoColor=8858ee&labelColor=black)]() 
-[![JavaScript](https://img.shields.io/badge/.NET-7c4edf?style=for-the-badge&logo=csharp&logoColor=7c4edf&labelColor=black)]() 
-[![JavaScript](https://img.shields.io/badge/MS%20Sql%20Server-a9192f?style=for-the-badge&logo=microsoftsqlserver&logoColor=red&labelColor=black)]() 
+[![Bootstrap5](https://img.shields.io/badge/Bootstrap%205-8858ee?style=for-the-badge&logo=bootstrap&logoColor=8858ee&labelColor=black)]() 
+[![Net](https://img.shields.io/badge/.NET-7c4edf?style=for-the-badge&logo=csharp&logoColor=7c4edf&labelColor=black)]() 
+[![SqlServer](https://img.shields.io/badge/MS%20Sql%20Server-a9192f?style=for-the-badge&logo=microsoftsqlserver&logoColor=red&labelColor=black)]() 
 <br>
-[![JavaScript](https://img.shields.io/badge/MVC-Modelo%20Vista%20Controlador-0938cb?style=for-the-badge&labelColor=black)]() 
-[![JavaScript](https://img.shields.io/badge/MS%20Identity%20Framework-158ef2?style=for-the-badge&logo=microsoft&logoColor=158ef2&labelColor=black)]() 
-[![JavaScript](https://img.shields.io/badge/MS%20Entity%20Framework-158ef2?style=for-the-badge&logo=microsoft&logoColor=158ef2&labelColor=black)]() 
+[![MVC](https://img.shields.io/badge/MVC-Modelo%20Vista%20Controlador-0938cb?style=for-the-badge&labelColor=black)]() 
+[![Identity](https://img.shields.io/badge/MS%20Identity%20Framework-158ef2?style=for-the-badge&logo=microsoft&logoColor=158ef2&labelColor=black)]() 
+[![Entity](https://img.shields.io/badge/MS%20Entity%20Framework-158ef2?style=for-the-badge&logo=microsoft&logoColor=158ef2&labelColor=black)]() 
 <br>
 
 
