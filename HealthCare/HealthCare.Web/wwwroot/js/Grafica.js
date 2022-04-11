@@ -88,7 +88,7 @@ $(document).ready(function () {
     $("#filtrar").click(function () {
         var inicial = $(fechaInicial).val();
         var final = $(fechaFinal).val();
-
+        var filtro = $("#filtro").text();
         if (inicial.length > 0 && final.length > 0)
         {
             $.ajax({
@@ -98,9 +98,11 @@ $(document).ready(function () {
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: '/Dashboards/graficaFiltrada',
+
+                url: '/Graficos/' + filtro,
                 error: function () {
-                    alert("Ocurrio un error al consultar los datos");
+                    $("#msjFiltro").empty();
+                    $("#msjFiltro").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">Ocurrio un error al consultar los datos<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div > ');            
                 },
                 success: function (data) {
                     $("#msjFiltro").empty();
